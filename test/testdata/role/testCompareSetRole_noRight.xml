@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSet>
+	<role id="1" name="role_admin" status="0" statusat="2001-01-01 00:00:00" >
+		<statusby_id xsi:nill="true"/>
+	</role>
+	<role id="2" name="role_visitor" status="0" statusat="2001-01-01 00:00:00" />
+</dataSet>
