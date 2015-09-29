@@ -6,5 +6,5 @@
 	<role id="2" name="role_visitor" status="0" statusat="2001-01-01 00:00:00">
 		<statusby_id xsi:nill="true"/>
 	</role>
-	<role name="role_new" status="0" statusat="2001-01-01 00:00:00" statusby_id="1"/>
+	<role name="role_new" status="0" statusby_id="1"/>
 </dataSet>

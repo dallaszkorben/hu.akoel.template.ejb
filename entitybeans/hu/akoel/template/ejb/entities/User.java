@@ -15,11 +15,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="users")
-public class User extends HistoryMappedSuperclass{
+public class User extends HistoryMappedSuperclass implements EntityObject{
 
 	private static final long serialVersionUID = -8033967557177671858L;
 	
-	private int id;
+	private Integer id;
 	private String name;
 	private String password;
 	private String email;
@@ -31,10 +31,10 @@ public class User extends HistoryMappedSuperclass{
 	@GeneratedValue(strategy=GenerationType.AUTO, generator="user_id_seq_gen")
 	@SequenceGenerator(allocationSize=1,initialValue=1,name="user_id_seq_gen", sequenceName="user_id_seq")
 	@Column(name="id")
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	
@@ -96,9 +96,32 @@ public class User extends HistoryMappedSuperclass{
 	public boolean equals( final Object user ) {		
         if (user instanceof User) {
             final User other = (User) user;
-            return other.id == this.id || other.getName().equals(this.getName()) || other.getEmail().equals(this.getEmail());        
+            return 
+            		other == this ||
+            		other.id.equals( this.id ) || 
+            		other.getName().equals(this.getName()) || 
+            		other.getEmail().equals(this.getEmail());        
         }	 
         return false;
+	}
+	
+	@Override
+	public boolean equalsByThisNotNullFields(Object otherObject) {
+		if( null != otherObject && otherObject instanceof User ){
+			User other = (User)otherObject;
+			if( 
+					( null == this.id || this.id.equals(other.id) ) && 
+					( null == this.getName() || this.getName().equals( other.getName() ) ) &&
+					( null == this.getEmail() || this.getEmail().equals( other.getEmail() ) ) &&
+					( null == this.getPassword() || this.getPassword().equals( other.getPassword() ) ) &&
+					( null == this.getFirstname() || this.getFirstname().equals( other.getFirstname() ) ) &&
+					( null == this.getSurname() || this.getSurname().equals( other.getSurname() ) )&&
+					( null == this.getRole() || this.getRole().equals( other.getRole() ) )
+			){
+				return true;
+			}			
+		}
+		return false;
 	}
 	
 	@Override
@@ -117,4 +140,5 @@ public class User extends HistoryMappedSuperclass{
 		
 		return out.toString();
 	}
+
 }

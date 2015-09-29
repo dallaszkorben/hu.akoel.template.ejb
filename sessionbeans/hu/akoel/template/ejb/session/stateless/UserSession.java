@@ -14,6 +14,7 @@ import hu.akoel.template.ejb.entities.User;
 import hu.akoel.template.ejb.enums.Status;
 import hu.akoel.template.ejb.exceptions.EJBeanException;
 import hu.akoel.template.ejb.exceptions.EJBNoResultFindByIdException;
+import hu.akoel.template.ejb.services.DateService;
 import hu.akoel.template.ejb.session.remote.UserRemote;
 
 @Stateless(name="UserSession", mappedName="session/UserSession")
@@ -43,7 +44,7 @@ public class UserSession implements UserRemote{
 		user.setFirstname(firstName);
 		user.setSurname(surname);
 		user.setEmail(email);
-		user.setStatusAt(Calendar.getInstance());
+		user.setStatusAt(DateService.getCalendar());
 		user.setStatusBy(statusBy);
 		user.setStatus(Status.CAPTURED);
 		

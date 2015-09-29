@@ -16,7 +16,15 @@ public class FeatureRightService {
 
 	public static User getAuthorized( EntityManager em, int userId, FeatureRight necessaryFeatureRight ) throws EJBeanException{
 		
-		User user = em.find( User.class, userId );
+		User user = null;
+		try{
+			user = em.find( User.class, userId );
+		}catch (Exception e){
+			e.printStackTrace();
+			EJBGeneralException generalException = new EJBGeneralException(e);						
+			LoggerService.severe(generalException.getLocalizedMessage());
+			throw generalException;
+		}
 		if( null == user ){
 			EJBNoResultFindByIdException e = new EJBNoResultFindByIdException( User.class, userId );			
 			LoggerService.severe( e.getLocalizedMessage() );

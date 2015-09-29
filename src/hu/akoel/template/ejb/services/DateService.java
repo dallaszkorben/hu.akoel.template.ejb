@@ -3,6 +3,7 @@ package hu.akoel.template.ejb.services;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class DateService {
 
@@ -15,7 +16,7 @@ public class DateService {
 
 	//TODO get value from cookie
 	public static String getTimeByFormatter(){
-		return getTimeByFormatter( getTime() );
+		return getTimeByFormatter( getCalendar().getTime() );
 	}
 
 	public static String getTimeByDefaultFormatter( Date date ){
@@ -23,12 +24,13 @@ public class DateService {
 	}
 
 	public static String getTimeByDefaultFormatter(){
-		return getTimeByDefaultFormatter( getTime() );
+		return getTimeByDefaultFormatter( getCalendar().getTime() );
 	}
 	
-	private static Date getTime(){
-		return Calendar.getInstance().getTime();
+	public static Calendar getCalendar(){
+		return GregorianCalendar.getInstance();
 	}
+	
 	
 	
 }

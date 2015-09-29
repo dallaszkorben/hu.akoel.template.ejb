@@ -1,5 +1,7 @@
 package hu.akoel.template.ejb.logger;
 
+import hu.akoel.template.ejb.services.DateService;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.logging.Formatter;
@@ -15,7 +17,7 @@ public class LogFileFormatter extends Formatter {
 		buf.append(rec.getLevel());
 
 		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy.MM.dd-hh:mm:ss");
-		buf.append(" " + dateFormatter.format(Calendar.getInstance().getTime()));
+		buf.append(" " + dateFormatter.format(DateService.getCalendar().getTime()));
 
 		buf.append(" " + formatMessage(rec));
 

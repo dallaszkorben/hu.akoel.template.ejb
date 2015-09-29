@@ -50,7 +50,7 @@ public abstract class HistoryMappedSuperclass implements Serializable{
 		this.statusBy = statusBy;
 	}
 	
-	public abstract boolean equals( final Object user );		
+	public abstract boolean equals( final Object otherObject );
 	
 	public abstract String toString();
 }

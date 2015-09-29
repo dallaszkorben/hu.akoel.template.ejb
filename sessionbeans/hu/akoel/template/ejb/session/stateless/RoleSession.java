@@ -15,6 +15,7 @@ import hu.akoel.template.ejb.enums.FeatureRight;
 import hu.akoel.template.ejb.enums.Status;
 import hu.akoel.template.ejb.exceptions.EJBeanException;
 import hu.akoel.template.ejb.exceptions.EJBPersistenceException;
+import hu.akoel.template.ejb.services.DateService;
 import hu.akoel.template.ejb.services.FeatureRightService;
 import hu.akoel.template.ejb.services.LoggerService;
 import hu.akoel.template.ejb.session.remote.RoleRemote;
@@ -46,7 +47,7 @@ public class RoleSession implements RoleRemote{
 		Role role = new Role();
 		role.setName(name);
 		
-		role.setStatusAt(Calendar.getInstance());
+		role.setStatusAt(DateService.getCalendar());
 		role.setStatusBy(statusBy);
 		role.setStatus(Status.CAPTURED);
 		

@@ -17,6 +17,7 @@ import hu.akoel.template.ejb.enums.Status;
 import hu.akoel.template.ejb.exceptions.EJBeanException;
 import hu.akoel.template.ejb.exceptions.EJBNoResultFindByIdException;
 import hu.akoel.template.ejb.exceptions.EJBPersistenceException;
+import hu.akoel.template.ejb.services.DateService;
 import hu.akoel.template.ejb.services.FeatureRightService;
 import hu.akoel.template.ejb.services.LoggerService;
 import hu.akoel.template.ejb.session.remote.RoleFeatureRightRemote;
@@ -57,7 +58,7 @@ public class RoleFeatureRightSession implements RoleFeatureRightRemote{
 		roleFeatureRight.setRole(role);
 		roleFeatureRight.setFeatureRight(featureRight);
 		
-		roleFeatureRight.setStatusAt(Calendar.getInstance());
+		roleFeatureRight.setStatusAt(DateService.getCalendar());
 		roleFeatureRight.setStatusBy(statusBy);
 		roleFeatureRight.setStatus(Status.CAPTURED);
 		

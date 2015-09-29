@@ -1,10 +1,7 @@
 package hu.akoel.template.ejb.entities;
 
 import hu.akoel.template.ejb.enums.FeatureRight;
-import hu.akoel.template.ejb.enums.Status;
 import hu.akoel.template.ejb.services.DateService;
-
-import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,11 +20,11 @@ import org.eclipse.persistence.annotations.Index;
 @Entity
 @Table(name="rolefeatureright")
 @Index(columnNames={"role", "featureRight"})
-public class RoleFeatureRight extends HistoryMappedSuperclass implements Serializable{
+public class RoleFeatureRight extends HistoryMappedSuperclass implements EntityObject{
 
 	private static final long serialVersionUID = 9220363710862227424L;
 	
-	private int id;
+	private Integer id;
 	private Role role;
 	private FeatureRight featureRight;
 	
@@ -35,10 +32,10 @@ public class RoleFeatureRight extends HistoryMappedSuperclass implements Seriali
 	@GeneratedValue(strategy=GenerationType.AUTO, generator="rolefeatureright_id_seq_gen")
 	@SequenceGenerator(allocationSize=1,initialValue=1,name="rolefeatureright_id_seq_gen", sequenceName="rolefeatureright_id_seq")
 	@Column(name="id")
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	
@@ -73,9 +70,27 @@ public class RoleFeatureRight extends HistoryMappedSuperclass implements Seriali
 	public boolean equals( final Object user ) {		
         if (user instanceof User) {
             final RoleFeatureRight other = (RoleFeatureRight) user;
-            return other == this || other.id == this.id || (other.getRole().equals(this.getRole() ) && other.getFeatureRight().equals(this.getFeatureRight() ) );        
+            return 
+            		other == this || 
+            		other.id.equals( this.id ) || 
+            		(other.getRole().equals(this.getRole() ) && other.getFeatureRight().equals(this.getFeatureRight() ) );        
         }	 
         return false;
+	}
+	
+	@Override
+	public boolean equalsByThisNotNullFields(Object otherObject) {
+		if( null != otherObject && otherObject instanceof RoleFeatureRight ){
+			RoleFeatureRight other = (RoleFeatureRight)otherObject;
+			if( 
+					( null == this.id || this.id.equals(other.id) ) && 
+					( null == this.getRole() || this.getRole().equals( other.getRole() ) ) &&
+					( null == this.getFeatureRight() || this.getFeatureRight().equals( other.getFeatureRight() ) ) 
+			){
+				return true;
+			}			
+		}
+		return false;
 	}
 	
 	public String toString(){
@@ -89,4 +104,5 @@ public class RoleFeatureRight extends HistoryMappedSuperclass implements Seriali
 		
 		return out.toString();
 	}
+
 }

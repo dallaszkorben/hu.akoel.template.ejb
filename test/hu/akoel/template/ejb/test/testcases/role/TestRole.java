@@ -1,19 +1,41 @@
 package hu.akoel.template.ejb.test.testcases.role;
 
-import static org.junit.Assert.fail;
+import java.util.GregorianCalendar;
 
 import javax.naming.NamingException;
 
+import hu.akoel.template.ejb.entities.Role;
+import hu.akoel.template.ejb.entities.User;
+import hu.akoel.template.ejb.enums.Status;
 import hu.akoel.template.ejb.exceptions.EJBNotFeatureRightException;
 import hu.akoel.template.ejb.services.InitialContextService;
-import hu.akoel.template.ejb.session.remote.RoleRemote;
 import hu.akoel.template.ejb.test.TestController;
 import hu.akoel.template.ejb.test.annotation.InputSet;
 import hu.akoel.template.ejb.test.exception.TestException;
+
+import org.junit.Before;
 import org.junit.Test;
 
+//import static org.powermock.api.mockito.PowerMockito.mockStatic;   
+//import static org.powermock.api.mockito.PowerMockito.when;  
 
+//@RunWith(PowerMockRunner.class)
+//@PrepareForTest({DateService.class})
+//@PowerMockIgnore({"org.apache.http.conn.ssl.*", "javax.net.ssl.*"})
 public class TestRole extends TestController{
+	//int mockYear = 2013;
+	//int mockMonth = Calendar.MARCH;
+	//int mockDay = 5;
+
+	//Calendar mockedDate = new GregorianCalendar(mockYear, mockMonth, mockDay, 0, 0, 0);
+
+	@Before
+	public void setup(){		
+	
+		//DateService dateService = Mockito.mock( DateService.class );
+		//Mockito.when(dateService.getCalendar() ).thenReturn( mockedDate );
+
+	}
 	
 	/**
 	 * Test case:		Capture a Role
@@ -30,8 +52,24 @@ public class TestRole extends TestController{
 		
 		//Mock the FeatureRightService
 		
+		User user = new User();
+		user.setId(1);
+//		user.setName( "adminuser" );
+//		user.setEmail("adminuser@somewhe.re");
+//		user.setFirstname("admin");
+//		user.setSurname("user");
+//		user.setPassword("***");
+//		user.setStatus(Status.CAPTURED);
+//		user.setStatusAt(new GregorianCalendar(2001,0,1));
+		
+		Role role = new Role();
+		role.setName( newRoleName);
+		role.setStatus( Status.CAPTURED );
+		role.setStatusBy( user );
+		role.setStatusAt(new GregorianCalendar(2001,0,1));
+		
 		Object[] parameterList = new Object[]{newRoleName, captureUserId};
-		doSession( InitialContextService.getRoleSession(), "doCapture", parameterList, "test/testdata/role/testCompareSetRole_Added.xml", EJBNotFeatureRightException.class );		
+		doSession( InitialContextService.getRoleSession(), "doCapture", parameterList, "test/testdata/role/testCompareSetRole_Added.xml", role, EJBNotFeatureRightException.class );		
 		
 	}
 	

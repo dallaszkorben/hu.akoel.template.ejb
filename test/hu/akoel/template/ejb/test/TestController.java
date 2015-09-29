@@ -1,5 +1,6 @@
 package hu.akoel.template.ejb.test;
 
+import hu.akoel.template.ejb.entities.EntityObject;
 import hu.akoel.template.ejb.exceptions.EJBeanException;
 import hu.akoel.template.ejb.services.InitialContextService;
 import hu.akoel.template.ejb.test.annotation.InputSet;
@@ -7,6 +8,7 @@ import hu.akoel.template.ejb.test.exception.TestDBCompareException;
 import hu.akoel.template.ejb.test.exception.TestDBCompareXMLFormatException;
 import hu.akoel.template.ejb.test.exception.TestException;
 import hu.akoel.template.ejb.test.exception.TestNotExpectedException;
+import hu.akoel.template.ejb.test.exception.TestResultValueCompareException;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -31,16 +33,17 @@ import liquibase.resource.FileSystemResourceAccessor;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
+import org.powermock.modules.testng.PowerMockTestCase;
 import org.xml.sax.SAXException;
 
-public class TestController {
+public class TestController{
 	protected ArrayList<Liquibase> liquibaseList = new ArrayList<>();
 	private Connection conn = null;
 	private Database database;	
 	
 //	@Rule
 //	public TestName testName = new TestName();
-
+	
 	@Rule
 	public TestWatcher testWatcher = new MyTestWatcher();
 
@@ -54,7 +57,7 @@ public class TestController {
 			conn = ds.getConnection();
 			database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(conn));
 		} catch (NamingException | DatabaseException | SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			throw new Error(e);				
 		}
 	}
@@ -116,21 +119,30 @@ public class TestController {
 	};
 
 	public void doSession( Object obj, String methodName, Object[] parameterList, String compareSet) throws TestException{
-		doSession(obj, methodName, parameterList, compareSet, null);
+		doSession(obj, methodName, parameterList, compareSet, null, null);
 	}
 	
 	public void doSession( Object obj, String methodName, Object[] parameterList) throws TestException{
-		doSession(obj, methodName, parameterList, null, null);
+		doSession(obj, methodName, parameterList, null, null, null);
 	}
 	
 	public void doSession( Object obj, String methodName, Object[] parameterList, Class<? extends EJBeanException> expectedException ) throws TestException{
-		doSession(obj, methodName, parameterList, null, expectedException);
+		doSession(obj, methodName, parameterList, null, null, expectedException);
 	}
-	
-	public void doSession( Object obj, String methodName, Object[] parameterList, String compareSet, Class<? extends EJBeanException> expectedException ) throws TestException{
+
+	public void doSession( Object obj, String methodName, Object[] parameterList, EntityObject expectedEntity ) throws TestException{
+		doSession(obj, methodName, parameterList, null, expectedEntity, null);
+	}
+
+	public void doSession( Object obj, String methodName, Object[] parameterList, String compareSet, Class<? extends EJBeanException> expectedException) throws TestException{
+		doSession(obj, methodName, parameterList, compareSet, null, expectedException);
+	}
+
+	public void doSession( Object obj, String methodName, Object[] parameterList, String compareDBSet, EntityObject expectedEntity, Class<? extends EJBeanException> expectedException ) throws TestException{
 
 //		Class<?>[] parameterClassList = Arrays.copyOf(parameterList, parameterList.length, Class[].class );
-
+		EntityObject actualEntity = null;
+		
 		Class<?>[] parameterClassList = new Class<?>[ parameterList.length ];
 		for( int i = 0; i < parameterList.length; i++ ){
 			parameterClassList[i] = parameterList[i].getClass();
@@ -145,7 +157,7 @@ public class TestController {
 		}
 
 		try {
-			  method.invoke(obj, parameterList);
+			  actualEntity = (EntityObject) method.invoke(obj, parameterList);
 		} catch (IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
 			throw new Error(e);
@@ -162,9 +174,9 @@ public class TestController {
 		//--------------------
 		// Compare the DB
 		//--------------------
-		if( null != compareSet ){
+		if( null != compareDBSet ){
 			try {
-				String difference = CompareXMLToDB.getDifference(compareSet, conn, database);
+				String difference = CompareXMLToDB.getDifference(compareDBSet, conn, database);
 				if( null != difference ){
 					throw new TestDBCompareException(difference );
 				}
@@ -173,6 +185,16 @@ public class TestController {
 				throw new TestDBCompareXMLFormatException(e.getLocalizedMessage());
 			}
 		}
+		
+		//--------------------
+		// Compare the result
+		//--------------------
+		if( null != actualEntity ){
+			if( !expectedEntity.equalsByThisNotNullFields(actualEntity ) ){
+				throw new TestResultValueCompareException( expectedEntity.toString() + " is expected but got: " + actualEntity );
+			}
+		}
+		
 	}
 
 

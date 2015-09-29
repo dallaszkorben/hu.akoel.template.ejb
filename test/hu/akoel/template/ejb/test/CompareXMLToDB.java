@@ -34,13 +34,14 @@ public class CompareXMLToDB {
 
 		NodeList dataSetList = doc.getElementsByTagName("dataSet");
 		
-		//Through the elements <dataSet> Generally only ONE
+		//Through the <dataSet>s. Generally only ONE
 		for (int i = 0; i < dataSetList.getLength(); i++) {
 						
 			Node dataSetNode = dataSetList.item(i);
 			
 			NodeList tableNodeList = dataSetNode.getChildNodes();
 			
+			//Through the Tables
 			for( int j = 0; j < tableNodeList.getLength(); j++){
 			
 				Node tableNode = tableNodeList.item( j );
@@ -60,6 +61,7 @@ public class CompareXMLToDB {
 					queryString.append( tableName );
 					queryString.append( " WHERE " );
 					
+					//Through the Fields of the Table
 					for (int k = 0; k < numAttrs; k++) {
 						Attr attr = (Attr) attributeMap.item(k);
 						
@@ -82,6 +84,36 @@ public class CompareXMLToDB {
 						
 					}					
 					
+					//TODO it should be more sophisticated
+					//No only recognize if the field is NULL
+					//Should be recognized if it is a normal field definition
+					//There are EXTRA fields
+					NodeList extraFieldNodeList = tableElement.getChildNodes();
+					//Through the Extra fields
+					for( int l = 0; l < extraFieldNodeList.getLength(); l++){
+						
+						Node extraFieldNode = extraFieldNodeList.item( l );
+					
+						if (extraFieldNode.getNodeType() == Node.ELEMENT_NODE) {						
+					
+							Element extraFieldElement = (Element) extraFieldNode;
+							String fieldName = extraFieldElement.getNodeName();
+							String isNull = extraFieldElement.getAttribute("xsi:nill");
+							if( "true".equals( isNull.toLowerCase() )){
+								
+								queryString.append( " AND ");
+								queryString.append( fieldName );
+								queryString.append( " is NULL ");
+								
+								tableRow.append( " ");
+								tableRow.append( fieldName );
+								tableRow.append( "=NULL");
+
+							}							
+						}
+					}
+							
+							
 					tableRow.append( "/>");
 					
 					Statement stm = conn.createStatement();
