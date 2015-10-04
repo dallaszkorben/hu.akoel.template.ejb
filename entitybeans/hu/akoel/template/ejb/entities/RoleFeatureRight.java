@@ -20,7 +20,7 @@ import org.eclipse.persistence.annotations.Index;
 @Entity
 @Table(name="rolefeatureright")
 @Index(columnNames={"role", "featureRight"})
-public class RoleFeatureRight extends HistoryMappedSuperclass implements EntityObject{
+public class RoleFeatureRight extends HistoryMappedSuperclass<RoleFeatureRight> implements EntityObject{
 
 	private static final long serialVersionUID = 9220363710862227424L;
 	
@@ -49,7 +49,7 @@ public class RoleFeatureRight extends HistoryMappedSuperclass implements EntityO
 	}	
 	
 	@Column(nullable=false)
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	public FeatureRight getFeatureRight(){
 		return featureRight;
 	}
@@ -62,8 +62,7 @@ public class RoleFeatureRight extends HistoryMappedSuperclass implements EntityO
 	public int hashCode(){	
 		final int prime = 31;
 		int hash = 3;
-		hash = hash * prime + this.getRole().hashCode();
-		hash = hash * prime + this.getFeatureRight().hashCode();
+		hash = hash * prime + this.getId().hashCode();
 		return hash;
 	}
 	
@@ -72,8 +71,7 @@ public class RoleFeatureRight extends HistoryMappedSuperclass implements EntityO
             final RoleFeatureRight other = (RoleFeatureRight) user;
             return 
             		other == this || 
-            		other.id.equals( this.id ) || 
-            		(other.getRole().equals(this.getRole() ) && other.getFeatureRight().equals(this.getFeatureRight() ) );        
+            		other.getId().equals( this.getId() );        
         }	 
         return false;
 	}
@@ -98,9 +96,9 @@ public class RoleFeatureRight extends HistoryMappedSuperclass implements EntityO
 		out.append("RoleFeatureRight = id: " + this.getId() );
 		out.append(", Role: " + this.getRole().getName() );
 		out.append(", FeatureRight: " + this.getFeatureRight().getLocalized() );
-		out.append(" - St: " + this.getStatus().getLocalized() );
-		out.append(", Ch: " + DateService.getTimeByDefaultFormatter( this.getStatusAt().getTime() ) );
-		out.append(", By: " + (this.getStatusBy() == null ? "": this.getStatusBy().getName()));
+//		out.append(" - St: " + this.getStatus() );
+		out.append(", Ch: " + DateService.getTimeByDefaultFormatter( this.getCapturedAt().getTime() ) );
+		out.append(", By: " + (this.getCapturedBy() == null ? "": this.getCapturedBy().getName()));
 		
 		return out.toString();
 	}

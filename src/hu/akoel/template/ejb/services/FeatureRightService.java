@@ -33,7 +33,8 @@ public class FeatureRightService {
 		
 		Role role = user.getRole();
 		try{
-			Query q = em.createQuery("SELECT rfr FROM RoleFeatureRight rfr WHERE rfr.role= :role AND rfr.featureRight= :featureRight");
+			//TODO handle the deleted
+			Query q = em.createQuery("SELECT rfr FROM RoleFeatureRight rfr WHERE rfr.role= :role AND rfr.featureRight= :featureRight");			
 			q.setParameter("role", role);
 			q.setParameter("featureRight", necessaryFeatureRight);
 			
@@ -42,6 +43,7 @@ public class FeatureRightService {
 		
 		//No Feature Right
 		}catch(NoResultException nre ){
+			nre.printStackTrace();
 			EJBNotFeatureRightException fre = new EJBNotFeatureRightException(userId, necessaryFeatureRight );
 			throw fre;	
 			

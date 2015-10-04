@@ -1,7 +1,5 @@
 package hu.akoel.template.ejb.session.stateless;
 
-import java.util.Calendar;
-
 import javax.annotation.Resource;
 import javax.ejb.LocalBean;
 import javax.ejb.SessionContext;
@@ -13,7 +11,6 @@ import hu.akoel.template.ejb.entities.Role;
 import hu.akoel.template.ejb.entities.RoleFeatureRight;
 import hu.akoel.template.ejb.entities.User;
 import hu.akoel.template.ejb.enums.FeatureRight;
-import hu.akoel.template.ejb.enums.Status;
 import hu.akoel.template.ejb.exceptions.EJBeanException;
 import hu.akoel.template.ejb.exceptions.EJBNoResultFindByIdException;
 import hu.akoel.template.ejb.exceptions.EJBPersistenceException;
@@ -37,15 +34,10 @@ public class RoleFeatureRightSession implements RoleFeatureRightRemote{
 	 * Condition: FeatureRight.FEATURERIGHT_CAPTURE
 	 */
 	@Override
-	public RoleFeatureRight doCapture(Integer roleId, FeatureRight featureRight, Integer captureUserId) throws EJBeanException {
+	public RoleFeatureRight doCapture(Integer roleId, FeatureRight featureRight, Integer capturedById) throws EJBeanException {
 
-		User statusBy;
-		try{
-			statusBy = FeatureRightService.getAuthorized(em, captureUserId, FeatureRight.FEATURERIGHT_CAPTURE);
-		}catch( EJBeanException e){
-			LoggerService.severe( e.getLocalizedMessage() );
-			throw e;
-		}
+		//If exception occurs, it going to be thrown
+		User capturedBy = FeatureRightService.getAuthorized(em, capturedById, FeatureRight.FEATURERIGHT_CAPTURE);
 		
 		Role role = em.find( Role.class, roleId);
 		if( null == role ){
@@ -58,9 +50,8 @@ public class RoleFeatureRightSession implements RoleFeatureRightRemote{
 		roleFeatureRight.setRole(role);
 		roleFeatureRight.setFeatureRight(featureRight);
 		
-		roleFeatureRight.setStatusAt(DateService.getCalendar());
-		roleFeatureRight.setStatusBy(statusBy);
-		roleFeatureRight.setStatus(Status.CAPTURED);
+		roleFeatureRight.setCapturedAt(DateService.getCalendar());
+		roleFeatureRight.setCapturedBy(capturedBy);
 		
 		//Try to capture
 		try{

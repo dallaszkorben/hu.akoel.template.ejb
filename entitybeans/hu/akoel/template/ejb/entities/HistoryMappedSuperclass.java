@@ -1,13 +1,9 @@
 package hu.akoel.template.ejb.entities;
 
-import hu.akoel.template.ejb.enums.Status;
-
 import java.io.Serializable;
 import java.util.Calendar;
 
 import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
@@ -15,39 +11,38 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @MappedSuperclass
-public abstract class HistoryMappedSuperclass implements Serializable{
+public abstract class HistoryMappedSuperclass<T> implements Serializable, EntityObject{
 	
 	private static final long serialVersionUID = -7475491103263566166L;
 	
-	private Status status;
-	private Calendar statusAt;
-	private User statusBy;
-
-	@Column(nullable=false)
-	@Enumerated(EnumType.ORDINAL)
-	public Status getStatus(){
-		return status;
+	private Calendar capturedAt;
+	private User capturedBy;
+	private T original;
+	
+	@JoinColumn(name="original_id", nullable=true)
+	public T getOriginal(){
+		return original;
 	}
-	public void setStatus(Status status){
-		this.status = status;
+	public void setOriginal( T original ){
+		this.original = original;
 	}
 	
 	@Temporal( TemporalType.TIMESTAMP)
-	@Column(name="statusat", nullable=false)
-	public Calendar getStatusAt(){
-		return statusAt;
+	@Column(name="capturedat", nullable=false)
+	public Calendar getCapturedAt(){
+		return capturedAt;
 	}
-	public void setStatusAt(Calendar statusAt){
-		this.statusAt = statusAt;
+	public void setCapturedAt(Calendar capturedAt){
+		this.capturedAt = capturedAt;
 	}
 	
 	@ManyToOne(optional=true)
-	@JoinColumn(name="statusby_id", nullable=true)
-	public User getStatusBy(){
-		return statusBy;
+	@JoinColumn(name="capturedby_id", nullable=true)
+	public User getCapturedBy(){
+		return capturedBy;
 	}
-	public void setStatusBy(User statusBy){
-		this.statusBy = statusBy;
+	public void setCapturedBy(User capturedBy){
+		this.capturedBy = capturedBy;
 	}
 	
 	public abstract boolean equals( final Object otherObject );

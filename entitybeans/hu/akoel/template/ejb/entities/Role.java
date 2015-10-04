@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="role")
-public class Role extends HistoryMappedSuperclass implements EntityObject{
+public class Role extends HistoryMappedSuperclass<Role> implements EntityObject{
 
 	private static final long serialVersionUID = -8046466070317090805L;
 	
@@ -41,7 +41,7 @@ public class Role extends HistoryMappedSuperclass implements EntityObject{
 	public int hashCode(){
 		final int prime = 31;
 		int hash = 1;
-		hash = hash * prime + this.getName().hashCode();
+		hash = hash * prime + this.getId().hashCode();
 		return hash;
 	}
 	
@@ -50,8 +50,7 @@ public class Role extends HistoryMappedSuperclass implements EntityObject{
             final Role other = (Role) otherObject;
             return 
             		other == this ||
-            		other.id.equals( this.id ) || 
-            		other.getName().equals(this.getName());        
+            		other.getId().equals( this.getId() );
         }	 
         return false;
 	}
@@ -74,9 +73,9 @@ public class Role extends HistoryMappedSuperclass implements EntityObject{
 		StringBuffer out = new StringBuffer();
 		out.append("Role = id: " + this.getId() );
 		out.append(", Name: " + this.getName() );
-		out.append(" - St: " + this.getStatus().getLocalized() );
-		out.append(", Ch: " + DateService.getTimeByDefaultFormatter( this.getStatusAt().getTime() ) );
-		out.append(", By: " + (this.getStatusBy() == null ? "": this.getStatusBy().getName()));
+//		out.append(" - St: " + this.getStatus() );
+		out.append(", Ch: " + DateService.getTimeByDefaultFormatter( this.getCapturedAt().getTime() ) );
+		out.append(", By: " + (this.getCapturedBy() == null ? "": this.getCapturedBy().getName()));
 		
 		return out.toString();
 	}

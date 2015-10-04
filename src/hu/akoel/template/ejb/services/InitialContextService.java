@@ -49,8 +49,8 @@ public class InitialContextService {
 		return (UserRemote) getInitialContext().lookup("java:global/templatejee/UserSession!hu.akoel.template.ejb.session.remote.UserRemote");
 	}
 	
-	public static RoleFeatureRightRemote getRoleFeatureElementSession() throws NamingException{
-		return (RoleFeatureRightRemote) getInitialContext().lookup("java:global/templatejee/RoleFeatureElementSession!hu.akoel.template.ejb.session.remote.RoleFeatureElementRemote");
+	public static RoleFeatureRightRemote getRoleFeatureRightSession() throws NamingException{
+		return (RoleFeatureRightRemote) getInitialContext().lookup("java:global/templatejee/RoleFeatureRightSession!hu.akoel.template.ejb.session.remote.RoleFeatureRightRemote");
 	}
 
 }

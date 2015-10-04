@@ -21,8 +21,7 @@
 			<column name="id" value="1" />
 			<column name="name" value="role_admin" />
 						
-			<column name="status" value="0" />
-			<column name="statusat" value="2001-01-01" />
+			<column name="capturedat" value="2001-01-01" />
 		</insert>
 		
 		<!-- role_visitor -->
@@ -30,29 +29,41 @@
 			<column name="id" value="2" />
 			<column name="name" value="role_visitor" />
 						
-			<column name="status" value="0" />
-			<column name="statusat" value="2001-01-01" />
+			<column name="capturedat" value="2001-01-01" />
 		</insert>
-		
-		
+				
 		<!--====================-->
 		<!-- RoleFeatureRight	-->
 		<!--====================-->
+		<!-- role_admin /  -->
 		<insert schemaName="public" tableName="rolefeatureright">
 			<column name="id" value="1" />
 			<column name="role_id" value="1" />
-			<column name="featureright" value="0" />
+			<column name="featureright" value="ROLE_CAPTURE" />
 					
-			<column name="status" value="0" />
-			<column name="statusat" value="2001-01-01" />
+			<column name="capturedat" value="2001-01-01" />
 		</insert>
 		<insert schemaName="public" tableName="rolefeatureright">
 			<column name="id" value="2" />
 			<column name="role_id" value="1" />
-			<column name="featureright" value="1" />
+			<column name="featureright" value="ROLE_UPDATE" />
 					
-			<column name="status" value="0" />
-			<column name="statusat" value="2001-01-01" />
+			<column name="capturedat" value="2001-01-01" />
+		</insert>		
+		<insert schemaName="public" tableName="rolefeatureright">
+			<column name="id" value="3" />
+			<column name="role_id" value="1" />
+			<column name="featureright" value="ROLE_READ" />
+					
+			<column name="capturedat" value="2001-01-01" />
+		</insert>		
+		
+		<insert schemaName="public" tableName="rolefeatureright">
+			<column name="id" value="4" />
+			<column name="role_id" value="1" />
+			<column name="featureright" value="FEATURERIGHT_CAPTURE" />
+					
+			<column name="capturedat" value="2001-01-01" />
 		</insert>
 		
 		<!--========-->
@@ -68,8 +79,7 @@
 			<column name="firstname" value="admin" />
 			<column name="surname" value="uesr" />
 			
-			<column name="status" value="0" />
-			<column name="statusat" value="2001-01-01" />			
+			<column name="capturedat" value="2001-01-01" />			
 		</insert>
 		
 		<!-- visitor 	-->
@@ -82,8 +92,8 @@
 			<column name="firstname" value="" />
 			<column name="surname" value="" />
 			
-			<column name="status" value="0" />
-			<column name="statusat" value="2001-01-01" />			
+			<column name="capturedby_id" value="1" />
+			<column name="capturedat" value="2012-03-04" />			
 		</insert>	
 		
 		<rollback>

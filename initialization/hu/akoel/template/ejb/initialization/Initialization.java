@@ -115,7 +115,7 @@ public class Initialization {
 	public void fillOutRoleFeatureElement() throws NamingException, EJBNoResultFindByIdException{
 		User statusBy = null;
 		
-		RoleFeatureRightRemote roleFeatureElementSession = InitialContextService.getRoleFeatureElementSession();
+		RoleFeatureRightRemote roleFeatureElementSession = InitialContextService.getRoleFeatureRightSession();
 		
 		RoleFeatureRight roleFeatureElement;
 //		roleFeatureElement = roleFeatureElementSession.doCapture(roleAdminId, FeatureRight.ROLE_CAPTURE, statusBy);

@@ -3,21 +3,26 @@ package hu.akoel.template.ejb.test;
 import hu.akoel.template.ejb.entities.EntityObject;
 import hu.akoel.template.ejb.exceptions.EJBeanException;
 import hu.akoel.template.ejb.services.InitialContextService;
+import hu.akoel.template.ejb.services.JsonService;
 import hu.akoel.template.ejb.test.annotation.InputSet;
-import hu.akoel.template.ejb.test.exception.TestDBCompareException;
-import hu.akoel.template.ejb.test.exception.TestDBCompareXMLFormatException;
+import hu.akoel.template.ejb.test.exception.TestCompareJSonToResultFormatException;
+import hu.akoel.template.ejb.test.exception.TestCompareXMLToDBException;
+import hu.akoel.template.ejb.test.exception.TestCompareXMLToDBFormatException;
 import hu.akoel.template.ejb.test.exception.TestException;
 import hu.akoel.template.ejb.test.exception.TestNotExpectedException;
-import hu.akoel.template.ejb.test.exception.TestResultValueCompareException;
+import hu.akoel.template.ejb.test.exception.TestCompareJSonToResultException;
 
 import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Iterator;
 
+import javax.json.Json;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import javax.xml.parsers.ParserConfigurationException;
@@ -30,11 +35,19 @@ import liquibase.exception.DatabaseException;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.FileSystemResourceAccessor;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
-import org.powermock.modules.testng.PowerMockTestCase;
 import org.xml.sax.SAXException;
+
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TestController{
 	protected ArrayList<Liquibase> liquibaseList = new ArrayList<>();
@@ -118,30 +131,28 @@ public class TestController{
 		}
 	};
 
-	public void doSession( Object obj, String methodName, Object[] parameterList, String compareSet) throws TestException{
-		doSession(obj, methodName, parameterList, compareSet, null, null);
-	}
-	
-	public void doSession( Object obj, String methodName, Object[] parameterList) throws TestException{
-		doSession(obj, methodName, parameterList, null, null, null);
-	}
-	
-	public void doSession( Object obj, String methodName, Object[] parameterList, Class<? extends EJBeanException> expectedException ) throws TestException{
-		doSession(obj, methodName, parameterList, null, null, expectedException);
+	protected TestControllerChainParameterHelper initializeSession( Object service, String methodName, Object[] parameterList ){
+		return new TestControllerChainParameterHelper( this, service, methodName, parameterList );
 	}
 
-	public void doSession( Object obj, String methodName, Object[] parameterList, EntityObject expectedEntity ) throws TestException{
-		doSession(obj, methodName, parameterList, null, expectedEntity, null);
-	}
+	/**
+	 * Invokes Session operation
+	 * 
+	 * @param service
+	 * @param methodName
+	 * @param parameterList
+	 * @param expectedJSONObjectFileName
+	 * @param expectedJSONArrayFileName
+	 * @param expectedXMLFileName
+	 * @param expectedException
+	 * @return
+	 * @throws TestException
+	 */
+	//
+	@SuppressWarnings("unchecked")
+	public <E> E doSession( Object service, String methodName, Object[] parameterList, String expectedJSONObjectFileName, String expectedJSONArrayFileName, String expectedXMLFileName, Class<? extends EJBeanException> expectedException ) throws TestException{
 
-	public void doSession( Object obj, String methodName, Object[] parameterList, String compareSet, Class<? extends EJBeanException> expectedException) throws TestException{
-		doSession(obj, methodName, parameterList, compareSet, null, expectedException);
-	}
-
-	public void doSession( Object obj, String methodName, Object[] parameterList, String compareDBSet, EntityObject expectedEntity, Class<? extends EJBeanException> expectedException ) throws TestException{
-
-//		Class<?>[] parameterClassList = Arrays.copyOf(parameterList, parameterList.length, Class[].class );
-		EntityObject actualEntity = null;
+		E actualResult = null;
 		
 		Class<?>[] parameterClassList = new Class<?>[ parameterList.length ];
 		for( int i = 0; i < parameterList.length; i++ ){
@@ -150,14 +161,14 @@ public class TestController{
 		
 		Method method = null;
 		try {
-			method = obj.getClass().getMethod(methodName, parameterClassList );			
+			method = service.getClass().getMethod(methodName, parameterClassList );			
 		} catch (NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
 			throw new Error(e);
 		}
 
 		try {
-			  actualEntity = (EntityObject) method.invoke(obj, parameterList);
+			  actualResult = (E) method.invoke(service, parameterList);
 		} catch (IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
 			throw new Error(e);
@@ -172,30 +183,50 @@ public class TestController{
 		}
 		
 		//--------------------
-		// Compare the DB
+		// Compare XML the DB
 		//--------------------
-		if( null != compareDBSet ){
+		if( null != expectedXMLFileName ){
 			try {
-				String difference = CompareXMLToDB.getDifference(compareDBSet, conn, database);
+				String difference = CompareXMLToDB.getDifference(expectedXMLFileName, conn, database);
 				if( null != difference ){
-					throw new TestDBCompareException(difference );
+					throw new TestCompareXMLToDBException(expectedXMLFileName, difference );
 				}
 			} catch (ParserConfigurationException |SAXException |IOException | SQLException e) {				
 				//e.printStackTrace();
-				throw new TestDBCompareXMLFormatException(e.getLocalizedMessage());
+				throw new TestCompareXMLToDBFormatException(e.getLocalizedMessage());
 			}
 		}
 		
-		//--------------------
-		// Compare the result
-		//--------------------
-		if( null != actualEntity ){
-			if( !expectedEntity.equalsByThisNotNullFields(actualEntity ) ){
-				throw new TestResultValueCompareException( expectedEntity.toString() + " is expected but got: " + actualEntity );
+		//---------------------------------
+		// Compare JSONObject to the result
+		//---------------------------------			
+		if( null != expectedJSONObjectFileName ){
+			try {
+				String difference = CompareJSONToResult.getDifferenceJSONObject(expectedJSONObjectFileName, actualResult);
+				if( null != difference ){
+					throw new TestCompareJSonToResultException(expectedJSONObjectFileName, difference );
+				}
+			} catch ( IOException | JSONException e) {				
+				//e.printStackTrace();
+				throw new TestCompareJSonToResultFormatException(e.getLocalizedMessage());
+			}
+		
+		//---------------------------------
+		// Compare JSONArray to the result
+		//---------------------------------	
+		}else if( null != expectedJSONArrayFileName ){
+			try {
+				String difference = CompareJSONToResult.getDifferenceJSONArray(expectedJSONArrayFileName, actualResult);
+				if( null != difference ){
+					throw new TestCompareJSonToResultException(expectedJSONObjectFileName, difference );
+				}
+			} catch ( IOException | JSONException e) {				
+				//e.printStackTrace();
+				throw new TestCompareJSonToResultFormatException(e.getLocalizedMessage());
 			}
 		}
-		
+
+
+		return actualResult;
 	}
-
-
 }

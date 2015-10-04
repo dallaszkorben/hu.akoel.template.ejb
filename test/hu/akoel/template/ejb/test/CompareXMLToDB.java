@@ -23,9 +23,9 @@ import liquibase.database.Database;
 
 public class CompareXMLToDB {
 	
-	public static String getDifference( String expectedSetXML, Connection conn, Database dbToCompare) throws ParserConfigurationException, SAXException, IOException, SQLException{
+	public static String getDifference( String expectedXMLSetName, Connection conn, Database dbToCompare) throws ParserConfigurationException, SAXException, IOException, SQLException{
 				
-		File xmlFile = new File(expectedSetXML);
+		File xmlFile = new File(expectedXMLSetName);
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(xmlFile);

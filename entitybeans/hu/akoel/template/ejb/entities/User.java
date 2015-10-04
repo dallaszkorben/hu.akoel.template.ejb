@@ -15,7 +15,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="users")
-public class User extends HistoryMappedSuperclass implements EntityObject{
+public class User extends HistoryMappedSuperclass<User>{
 
 	private static final long serialVersionUID = -8033967557177671858L;
 	
@@ -88,7 +88,7 @@ public class User extends HistoryMappedSuperclass implements EntityObject{
 	public int hashCode(){
 		final int prime = 31;
 		int hash = 3;
-		hash = hash * prime + this.getName().hashCode();
+		hash = hash * prime + this.getId().hashCode();
 		return hash;
 	}
 	
@@ -98,9 +98,7 @@ public class User extends HistoryMappedSuperclass implements EntityObject{
             final User other = (User) user;
             return 
             		other == this ||
-            		other.id.equals( this.id ) || 
-            		other.getName().equals(this.getName()) || 
-            		other.getEmail().equals(this.getEmail());        
+            		other.getId().equals( this.getId() );        
         }	 
         return false;
 	}
@@ -133,9 +131,9 @@ public class User extends HistoryMappedSuperclass implements EntityObject{
 		out.append(", First name: " + this.getFirstname() );
 		out.append(", Surname: " + this.getSurname() );
 		out.append(", Role: " + LocalizeService.getDefaultLocalized( this.getRole().getName() ));
-		out.append(" - St: " + this.getStatus().getLocalized() );
-		out.append(", Ch: " + DateService.getTimeByDefaultFormatter( this.getStatusAt().getTime() ) );
-		out.append(", By: " + (this.getStatusBy() != null ? this.getStatusBy().getName() : "" ));
+//		out.append(" - St: " + this.getStatus() );
+		out.append(", Ch: " + DateService.getTimeByDefaultFormatter( this.getCapturedAt().getTime() ) );
+		out.append(", By: " + (this.getCapturedBy() != null ? this.getCapturedBy().getName() : "" ));
 
 		
 		return out.toString();
