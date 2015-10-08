@@ -70,7 +70,7 @@ public class RoleSession implements RoleRemote{
 		
 		Role roleToUpdate;
 		roleToUpdate = em.find( Role.class, roleId );
-		
+	
 		//History
 		Role roleToHistory = new Role();
 		roleToHistory.setName( roleToUpdate.getName() );		
@@ -78,6 +78,20 @@ public class RoleSession implements RoleRemote{
 		roleToHistory.setCapturedBy(roleToUpdate.getCapturedBy());		
 		roleToHistory.setOriginal( roleToUpdate );
 		
+		LoggerService.finest( "Role History start to persist: " + roleToHistory.toString()  );
+		
+		//Try to capture
+		try{
+			em.persist( roleToHistory );
+		}catch(Exception e){
+			EJBPersistenceException persistenceException = new EJBPersistenceException(roleToUpdate, e);
+			LoggerService.severe( persistenceException.getLocalizedMessage());
+			e.printStackTrace();
+			throw persistenceException;
+		}		
+
+		LoggerService.finest( "Role History Update has persisted: " + roleToHistory.toString()  );
+
 		//Updated
 		roleToUpdate.setName( name );
 		roleToUpdate.setCapturedAt(DateService.getCalendar());
@@ -87,8 +101,6 @@ public class RoleSession implements RoleRemote{
 		
 		//Try to capture
 		try{
-			//The ORDER is very important
-			em.persist( roleToHistory );
 			em.persist( roleToUpdate );			
 		}catch(Exception e){
 			EJBPersistenceException persistenceException = new EJBPersistenceException(roleToUpdate, e);
@@ -96,6 +108,7 @@ public class RoleSession implements RoleRemote{
 			e.printStackTrace();
 			throw persistenceException;
 		}
+		LoggerService.finest( "Role Update has persisted: " + roleToUpdate.toString()  );
 		
 		return roleToUpdate;
 	}

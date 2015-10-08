@@ -2,6 +2,7 @@ package hu.akoel.template.ejb.services;
 
 import hu.akoel.template.ejb.session.remote.RoleFeatureRightRemote;
 import hu.akoel.template.ejb.session.remote.RoleRemote;
+import hu.akoel.template.ejb.session.remote.ServiceRemote;
 import hu.akoel.template.ejb.session.remote.UserRemote;
 
 import java.util.Properties;
@@ -32,7 +33,12 @@ public class InitialContextService {
 			props.setProperty("org.omg.CORBA.ORBInitialPort", port);
 
 			ctx = new InitialContext(props);
+
+			//Clear the cache for TEST
+			ServiceRemote serviceRemote = (ServiceRemote) getInitialContext().lookup("java:global/templatejee/ServiceSession!hu.akoel.template.ejb.session.remote.ServiceRemote");
+			serviceRemote.clearCache();
 		}
+		
 		return ctx;	
 	}
 

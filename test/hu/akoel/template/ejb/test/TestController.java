@@ -1,28 +1,18 @@
 package hu.akoel.template.ejb.test;
 
-import hu.akoel.template.ejb.entities.EntityObject;
 import hu.akoel.template.ejb.exceptions.EJBeanException;
 import hu.akoel.template.ejb.services.InitialContextService;
-import hu.akoel.template.ejb.services.JsonService;
 import hu.akoel.template.ejb.test.annotation.InputSet;
-import hu.akoel.template.ejb.test.exception.TestCompareJSonToResultFormatException;
 import hu.akoel.template.ejb.test.exception.TestCompareXMLToDBException;
 import hu.akoel.template.ejb.test.exception.TestCompareXMLToDBFormatException;
 import hu.akoel.template.ejb.test.exception.TestException;
 import hu.akoel.template.ejb.test.exception.TestNotExpectedException;
-import hu.akoel.template.ejb.test.exception.TestCompareJSonToResultException;
-
 import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
-
-import javax.json.Json;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import javax.xml.parsers.ParserConfigurationException;
@@ -36,18 +26,10 @@ import liquibase.exception.LiquibaseException;
 import liquibase.resource.FileSystemResourceAccessor;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.xml.sax.SAXException;
-
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TestController{
 	protected ArrayList<Liquibase> liquibaseList = new ArrayList<>();
@@ -138,8 +120,8 @@ public class TestController{
 	/**
 	 * Invokes Session operation
 	 * 
-	 * @param service
-	 * @param methodName
+	 * @param session
+	 * @param sessionMethodName
 	 * @param parameterList
 	 * @param expectedJSONObjectFileName
 	 * @param expectedJSONArrayFileName
@@ -147,10 +129,12 @@ public class TestController{
 	 * @param expectedException
 	 * @return
 	 * @throws TestException
+	 * @throws JSONException 
+	 * @throws IOException 
 	 */
 	//
 	@SuppressWarnings("unchecked")
-	public <E> E doSession( Object service, String methodName, Object[] parameterList, String expectedJSONObjectFileName, String expectedJSONArrayFileName, String expectedXMLFileName, Class<? extends EJBeanException> expectedException ) throws TestException{
+	public <E> E doSession( Object session, String sessionMethodName, Object[] parameterList, String expectedJSONObjectFileName, String expectedJSONArrayFileName, String expectedXMLFileName, Class<? extends EJBeanException> expectedException ) throws TestException, IOException, JSONException{
 
 		E actualResult = null;
 		
@@ -161,14 +145,14 @@ public class TestController{
 		
 		Method method = null;
 		try {
-			method = service.getClass().getMethod(methodName, parameterClassList );			
+			method = session.getClass().getMethod(sessionMethodName, parameterClassList );			
 		} catch (NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
 			throw new Error(e);
 		}
 
 		try {
-			  actualResult = (E) method.invoke(service, parameterList);
+			  actualResult = (E) method.invoke(session, parameterList);
 		} catch (IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
 			throw new Error(e);
@@ -201,31 +185,14 @@ public class TestController{
 		// Compare JSONObject to the result
 		//---------------------------------			
 		if( null != expectedJSONObjectFileName ){
-			try {
-				String difference = CompareJSONToResult.getDifferenceJSONObject(expectedJSONObjectFileName, actualResult);
-				if( null != difference ){
-					throw new TestCompareJSonToResultException(expectedJSONObjectFileName, difference );
-				}
-			} catch ( IOException | JSONException e) {				
-				//e.printStackTrace();
-				throw new TestCompareJSonToResultFormatException(e.getLocalizedMessage());
-			}
+			CompareJSONToResult.doCompareAsJSONObject(expectedJSONObjectFileName, actualResult);
 		
 		//---------------------------------
 		// Compare JSONArray to the result
 		//---------------------------------	
 		}else if( null != expectedJSONArrayFileName ){
-			try {
-				String difference = CompareJSONToResult.getDifferenceJSONArray(expectedJSONArrayFileName, actualResult);
-				if( null != difference ){
-					throw new TestCompareJSonToResultException(expectedJSONObjectFileName, difference );
-				}
-			} catch ( IOException | JSONException e) {				
-				//e.printStackTrace();
-				throw new TestCompareJSonToResultFormatException(e.getLocalizedMessage());
-			}
+			CompareJSONToResult.doCompareAsJSONArray(expectedJSONArrayFileName, actualResult);
 		}
-
 
 		return actualResult;
 	}

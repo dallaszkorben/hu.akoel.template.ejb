@@ -10,6 +10,9 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @MappedSuperclass
 public abstract class HistoryMappedSuperclass<T> implements Serializable, EntityObject{
 	
@@ -38,6 +41,8 @@ public abstract class HistoryMappedSuperclass<T> implements Serializable, Entity
 	
 	@ManyToOne(optional=true)
 	@JoinColumn(name="capturedby_id", nullable=true)
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+	        property = "name")
 	public User getCapturedBy(){
 		return capturedBy;
 	}
