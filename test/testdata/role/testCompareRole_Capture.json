@@ -1,0 +1,22 @@
+{
+    "capturedBy": {
+        "name": "adminuser",
+        "capturedAt": 978303600000,
+        "capturedBy": null,
+        "original": null,
+        "id": 1,
+        "password": "***",
+        "email": "adminuser@somewhe.re",
+        "surname": "uesr",
+        "firstname": "admin",
+        "role": {
+            "capturedAt": 978303600000,
+            "capturedBy": null,
+            "original": null,
+            "id": 1,
+            "name": "role_admin"
+        }
+    },
+    "original": null,
+    "name": "role_new"
+}

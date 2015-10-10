@@ -1,0 +1,58 @@
+[
+    {
+        "capturedAt": 978303600000,
+        "capturedBy": null,
+        "original": {
+            "capturedAt": 1332543600000,
+            "capturedBy": {
+                "name": "adminuser",
+                "capturedAt": 978303600000,
+                "capturedBy": null,
+                "original": null,
+                "id": 1,
+                "password": "***",
+                "email": "adminuser@somewhe.re",
+                "surname": "uesr",
+                "firstname": "admin",
+                "role": {
+                    "capturedAt": 978303600000,
+                    "capturedBy": null,
+                    "original": null,
+                    "id": 1,
+                    "name": "role_admin"
+                }
+            },
+            "original": null,
+            "id": 2,
+            "name": "latest_role_visitor"
+        },
+        "id": 100,
+        "name": "role_visitor1"
+    },
+    {
+        "capturedAt": 986594400000,
+        "capturedBy": "adminuser",
+        "original": {
+            "capturedAt": 1332543600000,
+            "capturedBy": "adminuser",
+            "original": null,
+            "id": 2,
+            "name": "latest_role_visitor"
+        },
+        "id": 101,
+        "name": "role_visitor2"
+    },
+    {
+        "capturedAt": 1195686000000,
+        "capturedBy": "adminuser",
+        "original": {
+            "capturedAt": 1332543600000,
+            "capturedBy": "adminuser",
+            "original": null,
+            "id": 2,
+            "name": "latest_role_visitor"
+        },
+        "id": 102,
+        "name": "role_visitor3"
+    }
+]
