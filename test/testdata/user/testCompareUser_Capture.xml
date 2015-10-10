@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSet>
+	<users id="1" name="adminuser" email="adminuser@somewhe.re" firstname="admin" surname="user" password="***" role_id="1" capturedat="2001-01-01 00:00:00" >
+		<capturedby_id xsi:nill="true"/>
+		<original_id xsi:nill="true"/>
+	</users>
+	<users id="2" name="visitor" email="visitor@somewhe.re" firstname="" surname="" password="***" role_id="2" capturedby_id="1" capturedat="2012-03-04 00:00:00" >
+		<original_id xsi:nill="true"/>
+	</users>
+	<users name="newUser" email="newEmail@valah.ol" firstname="newUserFirstName" surname="newUserSurname" password="xxx" role_id="1" capturedby_id="1" >
+		<original_id xsi:nill="true"/>
+	</users>
+	
+</dataSet>

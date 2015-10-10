@@ -13,10 +13,11 @@ import javax.persistence.TemporalType;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="jsonId")
 @MappedSuperclass
 public abstract class HistoryMappedSuperclass<T> implements Serializable, EntityObject{
 	
-	private static final long serialVersionUID = -7475491103263566166L;
+	private static final long serialVersionUID = -7475211103263566166L;
 	
 	private Calendar capturedAt;
 	private User capturedBy;
@@ -41,8 +42,7 @@ public abstract class HistoryMappedSuperclass<T> implements Serializable, Entity
 	
 	@ManyToOne(optional=true)
 	@JoinColumn(name="capturedby_id", nullable=true)
-	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-	        property = "name")
+	//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "name")
 	public User getCapturedBy(){
 		return capturedBy;
 	}

@@ -1,6 +1,7 @@
 package hu.akoel.template.ejb.entities;
 
 import hu.akoel.template.ejb.services.DateService;
+import hu.akoel.template.ejb.services.JsonService;
 import hu.akoel.template.ejb.services.LocalizeService;
 
 import javax.persistence.Column;
@@ -13,6 +14,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+//@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 @Entity
 @Table(name="users")
 public class User extends HistoryMappedSuperclass<User>{
@@ -124,19 +129,18 @@ public class User extends HistoryMappedSuperclass<User>{
 	
 	@Override
 	public String toString(){
-		StringBuffer out = new StringBuffer();
-		out.append("User = id: " + this.getId() );
-		out.append(", Name: " + this.getName() );
-		out.append(", email: " + this.getEmail() );
-		out.append(", First name: " + this.getFirstname() );
-		out.append(", Surname: " + this.getSurname() );
-		out.append(", Role: " + LocalizeService.getDefaultLocalized( this.getRole().getName() ));
-//		out.append(" - St: " + this.getStatus() );
-		out.append(", Ch: " + DateService.getTimeByDefaultFormatter( this.getCapturedAt().getTime() ) );
-		out.append(", By: " + (this.getCapturedBy() != null ? this.getCapturedBy().getName() : "" ));
-
+		//StringBuffer out = new StringBuffer();
+		//out.append("User = id: " + this.getId() );
+		//out.append(", Name: " + this.getName() );
+		//out.append(", email: " + this.getEmail() );
+		//out.append(", First name: " + this.getFirstname() );
+		//out.append(", Surname: " + this.getSurname() );
+		//out.append(", Role: " + LocalizeService.getDefaultLocalized( this.getRole().getName() ));
+		//out.append(", Ch: " + DateService.getTimeByDefaultFormatter( this.getCapturedAt().getTime() ) );
+		//out.append(", By: " + (this.getCapturedBy() != null ? this.getCapturedBy().getName() : "" ));
+		//return out.toString();
 		
-		return out.toString();
+		return JsonService.getJsonStringFromJavaObject(this);
 	}
 
 }

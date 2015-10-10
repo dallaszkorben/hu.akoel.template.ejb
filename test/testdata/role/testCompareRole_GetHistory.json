@@ -1,20 +1,24 @@
 [
     {
+        "jsonId": 1,
         "capturedAt": 978303600000,
         "capturedBy": null,
         "original": {
+            "jsonId": 2,
             "capturedAt": 1332543600000,
             "capturedBy": {
-                "name": "adminuser",
+                "jsonId": 3,
                 "capturedAt": 978303600000,
                 "capturedBy": null,
                 "original": null,
                 "id": 1,
+                "name": "adminuser",
                 "password": "***",
                 "email": "adminuser@somewhe.re",
-                "surname": "uesr",
+                "surname": "user",
                 "firstname": "admin",
                 "role": {
+                    "jsonId": 4,
                     "capturedAt": 978303600000,
                     "capturedBy": null,
                     "original": null,
@@ -30,28 +34,18 @@
         "name": "role_visitor1"
     },
     {
+        "jsonId": 5,
         "capturedAt": 986594400000,
-        "capturedBy": "adminuser",
-        "original": {
-            "capturedAt": 1332543600000,
-            "capturedBy": "adminuser",
-            "original": null,
-            "id": 2,
-            "name": "latest_role_visitor"
-        },
+        "capturedBy": 3,
+        "original": 2,
         "id": 101,
         "name": "role_visitor2"
     },
     {
+        "jsonId": 6,
         "capturedAt": 1195686000000,
-        "capturedBy": "adminuser",
-        "original": {
-            "capturedAt": 1332543600000,
-            "capturedBy": "adminuser",
-            "original": null,
-            "id": 2,
-            "name": "latest_role_visitor"
-        },
+        "capturedBy": 3,
+        "original": 2,
         "id": 102,
         "name": "role_visitor3"
     }

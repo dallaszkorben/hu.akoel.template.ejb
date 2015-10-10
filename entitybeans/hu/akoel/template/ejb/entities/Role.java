@@ -1,6 +1,6 @@
 package hu.akoel.template.ejb.entities;
 
-import hu.akoel.template.ejb.services.DateService;
+import hu.akoel.template.ejb.services.JsonService;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+//@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 @Entity
 @Table(name="role")
 public class Role extends HistoryMappedSuperclass<Role> implements EntityObject{
@@ -70,14 +71,14 @@ public class Role extends HistoryMappedSuperclass<Role> implements EntityObject{
 	}
 	
 	public String toString(){
-		StringBuffer out = new StringBuffer();
-		out.append("Role = id: " + this.getId() );
-		out.append(", Name: " + this.getName() );
-//		out.append(" - St: " + this.getStatus() );
-		out.append(", Ch: " + DateService.getTimeByDefaultFormatter( this.getCapturedAt().getTime() ) );
-		out.append(", By: " + (this.getCapturedBy() == null ? "": this.getCapturedBy().getName()));
+		//StringBuffer out = new StringBuffer();
+		//out.append("Role = id: " + this.getId() );
+		//out.append(", Name: " + this.getName() );
+		//out.append(", Ch: " + DateService.getTimeByDefaultFormatter( this.getCapturedAt().getTime() ) );
+		//out.append(", By: " + (this.getCapturedBy() == null ? "": this.getCapturedBy().getName()));
+		//return out.toString();
 		
-		return out.toString();
+		return JsonService.getJsonStringFromJavaObject(this);
 	}
 
 }

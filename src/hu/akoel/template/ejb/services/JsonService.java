@@ -4,6 +4,8 @@ package hu.akoel.template.ejb.services;
 import org.json.JSONException;
 import org.json.JSONObject;
 */
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -13,6 +15,8 @@ public class JsonService {
 		String requestBean = null;
 		try {
 			ObjectMapper mapper = new ObjectMapper();
+			mapper.setVisibility(PropertyAccessor.ALL, Visibility.NONE );
+			mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY );
 			requestBean = mapper.writeValueAsString(object);
 		} catch (JsonProcessingException e1) {
 			e1.printStackTrace();

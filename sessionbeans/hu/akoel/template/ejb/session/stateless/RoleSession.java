@@ -59,8 +59,7 @@ public class RoleSession implements RoleRemote{
 			throw persistenceException;
 		}
 		
-		LoggerService.finest( "Role Capture has persisted: " + role.toString()  );
-		LoggerService.info( "Return: " + JsonService.getJsonStringFromJavaObject( role ));
+		LoggerService.info( "Role Capture has persisted: " + role.toString()  );
 		
 		return role;
 	}
@@ -103,8 +102,7 @@ public class RoleSession implements RoleRemote{
 			throw persistenceException;
 		}		
 		
-		LoggerService.finest( "Role Update has persisted: " + roleToUpdate.toString()  );
-		LoggerService.info( "Return: " + LoggerService.getJsonStringFromJavaObject( roleToUpdate ));
+		LoggerService.info( "Role Update has persisted: " + roleToUpdate.toString()  );
 		
 		return roleToUpdate;
 	}
@@ -125,7 +123,7 @@ public class RoleSession implements RoleRemote{
 		@SuppressWarnings("unchecked")
 		List<Role> roleList = q.getResultList();
 		
-		LoggerService.info( "Return: " + JsonService.getJsonStringFromJavaObject(roleList));
+		LoggerService.info( "Role history: " + JsonService.getJsonStringFromJavaObject(roleList));
 		
 		return roleList;
 

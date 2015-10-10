@@ -1,22 +1,19 @@
 {
+    "jsonId": 1,
     "capturedBy": {
-        "name": "adminuser",
+        "jsonId": 2,
         "capturedAt": 978303600000,
         "capturedBy": null,
         "original": null,
         "id": 1,
+        "name": "adminuser",
         "password": "***",
         "email": "adminuser@somewhe.re",
-        "surname": "uesr",
+        "surname": "user",
         "firstname": "admin",
-        "role": {
-            "capturedBy": "adminuser",
-            "original": null,
-            "id": 1,
-            "name": "updated_role_name"
-        }
+        "role": 1
     },
     "original": null,
     "id": 1,
     "name": "updated_role_name"
-}    
+}

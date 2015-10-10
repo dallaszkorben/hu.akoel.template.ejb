@@ -37,29 +37,53 @@
 		<!--====================-->
 		<!-- role_admin /  -->
 		<insert schemaName="public" tableName="rolefeatureright">
-			<column name="id" value="1" />
+			<column name="id" value="1001" />
 			<column name="role_id" value="1" />
 			<column name="featureright" value="ROLE_CAPTURE" />
 					
 			<column name="capturedat" value="2001-01-01" />
 		</insert>
 		<insert schemaName="public" tableName="rolefeatureright">
-			<column name="id" value="2" />
+			<column name="id" value="1002" />
 			<column name="role_id" value="1" />
 			<column name="featureright" value="ROLE_UPDATE" />
 					
 			<column name="capturedat" value="2001-01-01" />
 		</insert>		
 		<insert schemaName="public" tableName="rolefeatureright">
-			<column name="id" value="3" />
+			<column name="id" value="1003" />
 			<column name="role_id" value="1" />
 			<column name="featureright" value="ROLE_READ" />
 					
 			<column name="capturedat" value="2001-01-01" />
+		</insert>
+		
+		<!-- user_admin /  -->
+		<insert schemaName="public" tableName="rolefeatureright">
+			<column name="id" value="1101" />
+			<column name="role_id" value="1" />
+			<column name="featureright" value="USER_CAPTURE" />
+					
+			<column name="capturedat" value="2001-01-01" />
+		</insert>		
+		<insert schemaName="public" tableName="rolefeatureright">
+			<column name="id" value="1102" />
+			<column name="role_id" value="1" />
+			<column name="featureright" value="USER_UPDATE" />
+					
+			<column name="capturedat" value="2001-01-01" />
+		</insert>		
+		<insert schemaName="public" tableName="rolefeatureright">
+			<column name="id" value="1103" />
+			<column name="role_id" value="1" />
+			<column name="featureright" value="USER_READ" />
+					
+			<column name="capturedat" value="2001-01-01" />
 		</insert>		
 		
+		
 		<insert schemaName="public" tableName="rolefeatureright">
-			<column name="id" value="4" />
+			<column name="id" value="1201" />
 			<column name="role_id" value="1" />
 			<column name="featureright" value="FEATURERIGHT_CAPTURE" />
 					
@@ -77,7 +101,7 @@
 			<column name="password" value="***" />
 			<column name="email" value="adminuser@somewhe.re" />
 			<column name="firstname" value="admin" />
-			<column name="surname" value="uesr" />
+			<column name="surname" value="user" />
 			
 			<column name="capturedat" value="2001-01-01" />			
 		</insert>

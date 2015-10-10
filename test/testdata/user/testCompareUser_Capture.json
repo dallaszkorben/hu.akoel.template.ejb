@@ -21,5 +21,10 @@
         }
     },
     "original": null,
-    "name": "role_new"
+    "name": "newUser",
+    "password": "xxx",
+    "email": "newEmail@valah.ol",
+    "surname": "newUserSurname",
+    "firstname": "newUserFirstName",
+    "role": 3
 }

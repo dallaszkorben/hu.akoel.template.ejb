@@ -2,6 +2,7 @@ package hu.akoel.template.ejb.entities;
 
 import hu.akoel.template.ejb.enums.FeatureRight;
 import hu.akoel.template.ejb.services.DateService;
+import hu.akoel.template.ejb.services.JsonService;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,10 @@ import javax.persistence.Table;
 
 import org.eclipse.persistence.annotations.Index;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+//@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 @Entity
 @Table(name="rolefeatureright")
 @Index(columnNames={"role", "featureRight"})
@@ -92,15 +97,15 @@ public class RoleFeatureRight extends HistoryMappedSuperclass<RoleFeatureRight> 
 	}
 	
 	public String toString(){
-		StringBuffer out = new StringBuffer();
-		out.append("RoleFeatureRight = id: " + this.getId() );
-		out.append(", Role: " + this.getRole().getName() );
-		out.append(", FeatureRight: " + this.getFeatureRight().getLocalized() );
-//		out.append(" - St: " + this.getStatus() );
-		out.append(", Ch: " + DateService.getTimeByDefaultFormatter( this.getCapturedAt().getTime() ) );
-		out.append(", By: " + (this.getCapturedBy() == null ? "": this.getCapturedBy().getName()));
+		//StringBuffer out = new StringBuffer();
+		//out.append("RoleFeatureRight = id: " + this.getId() );
+		//out.append(", Role: " + this.getRole().getName() );
+		//out.append(", FeatureRight: " + this.getFeatureRight().getLocalized() );
+		//out.append(", Ch: " + DateService.getTimeByDefaultFormatter( this.getCapturedAt().getTime() ) );
+		//out.append(", By: " + (this.getCapturedBy() == null ? "": this.getCapturedBy().getName()));
+		//return out.toString();
 		
-		return out.toString();
+		return JsonService.getJsonStringFromJavaObject(this);
 	}
 
 }
