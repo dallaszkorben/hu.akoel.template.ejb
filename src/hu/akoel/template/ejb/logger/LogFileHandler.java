@@ -5,9 +5,9 @@ import java.util.logging.FileHandler;
 
 public class LogFileHandler extends FileHandler{
 
-	public LogFileHandler() throws IOException, SecurityException {
+	public LogFileHandler( String filePath ) throws IOException, SecurityException {
 		//glassfish/domains/domains1/
-		super( "../logs/hu.akoel.enta.log" );
+		super( filePath );
 		this.setFormatter( new LogFileFormatter() );		
 	}
 

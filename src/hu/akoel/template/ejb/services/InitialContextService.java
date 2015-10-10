@@ -34,10 +34,10 @@ public class InitialContextService {
 
 			ctx = new InitialContext(props);
 
-			//Clear the cache for TEST
-			ServiceRemote serviceRemote = (ServiceRemote) getInitialContext().lookup("java:global/templatejee/ServiceSession!hu.akoel.template.ejb.session.remote.ServiceRemote");
-			serviceRemote.clearCache();
 		}
+		//Clear the cache for TEST
+		ServiceRemote serviceRemote = (ServiceRemote) ctx.lookup("java:global/templatejee/ServiceSession!hu.akoel.template.ejb.session.remote.ServiceRemote");
+		serviceRemote.clearCache();
 		
 		return ctx;	
 	}

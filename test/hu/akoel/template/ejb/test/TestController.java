@@ -1,18 +1,20 @@
 package hu.akoel.template.ejb.test;
 
-import hu.akoel.template.ejb.exceptions.EJBeanException;
 import hu.akoel.template.ejb.services.InitialContextService;
 import hu.akoel.template.ejb.test.annotation.InputSet;
 import hu.akoel.template.ejb.test.exception.TestCompareXMLToDBException;
 import hu.akoel.template.ejb.test.exception.TestCompareXMLToDBFormatException;
 import hu.akoel.template.ejb.test.exception.TestException;
+import hu.akoel.template.ejb.test.exception.TestNoExceptionException;
 import hu.akoel.template.ejb.test.exception.TestNotExpectedException;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import javax.xml.parsers.ParserConfigurationException;
@@ -134,7 +136,7 @@ public class TestController{
 	 */
 	//
 	@SuppressWarnings("unchecked")
-	public <E> E doSession( Object session, String sessionMethodName, Object[] parameterList, String expectedJSONObjectFileName, String expectedJSONArrayFileName, String expectedXMLFileName, Class<? extends EJBeanException> expectedException ) throws TestException, IOException, JSONException{
+	public <E> E doSession( Object session, String sessionMethodName, Object[] parameterList, String expectedJSONObjectFileName, String expectedJSONArrayFileName, String expectedXMLFileName, ExpectedExceptionObject expectedException ) throws TestException, IOException, JSONException{
 
 		E actualResult = null;
 		
@@ -153,6 +155,10 @@ public class TestController{
 
 		try {
 			  actualResult = (E) method.invoke(session, parameterList);
+			  
+			  if( null != expectedException ){
+				  throw new TestNoExceptionException( expectedException.getExpectedClass().toString() );
+			  }
 		} catch (IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
 			throw new Error(e);
@@ -160,9 +166,21 @@ public class TestController{
 			
 			Throwable targetException = e.getTargetException();
 			
-			//There was an exception but it was not the expected !!!!
-			if( null == expectedException || !targetException.getClass().equals( expectedException) ){				
+			//There was an exception but was not defined the expected OR it was not the expected !!!!
+			if( null == expectedException || !targetException.getClass().equals( expectedException.getExpectedClass()) ){				
 				throw new TestNotExpectedException( targetException.getLocalizedMessage() );
+			
+			//The exception was the expected but probably the message was different	
+			}else{
+				
+				String expectedMessage = expectedException.getExactMessage();
+				ArrayList<String> partialMessage = expectedException.getPartialMessage();
+				
+				//The exact message was specified but it not the same as the catched
+				if( null != expectedMessage && !expectedMessage.equals( targetException.getMessage() ) ){
+					throw new TestNotExpectedException( targetException.getLocalizedMessage() );
+				}
+				
 			}
 		}
 		

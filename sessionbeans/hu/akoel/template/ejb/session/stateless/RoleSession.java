@@ -17,6 +17,7 @@ import hu.akoel.template.ejb.exceptions.EJBeanException;
 import hu.akoel.template.ejb.exceptions.EJBPersistenceException;
 import hu.akoel.template.ejb.services.DateService;
 import hu.akoel.template.ejb.services.FeatureRightService;
+import hu.akoel.template.ejb.services.JsonService;
 import hu.akoel.template.ejb.services.LoggerService;
 import hu.akoel.template.ejb.session.remote.RoleRemote;
 
@@ -58,10 +59,16 @@ public class RoleSession implements RoleRemote{
 			throw persistenceException;
 		}
 		
+		LoggerService.finest( "Role Capture has persisted: " + role.toString()  );
+		LoggerService.info( "Return: " + JsonService.getJsonStringFromJavaObject( role ));
+		
 		return role;
 	}
 	
-	
+	/**
+	 * Update a Role
+	 * Condition ROLE_UPDATE
+	 */
 	@Override
 	public Role doUpdate(Integer roleId, String name, Integer updateById) throws EJBeanException {
 
@@ -71,6 +78,8 @@ public class RoleSession implements RoleRemote{
 		Role roleToUpdate;
 		roleToUpdate = em.find( Role.class, roleId );
 	
+		LoggerService.finest( "Role Update start to persist: " + roleToUpdate.toString()  );
+		
 		//History
 		Role roleToHistory = new Role();
 		roleToHistory.setName( roleToUpdate.getName() );		
@@ -78,37 +87,24 @@ public class RoleSession implements RoleRemote{
 		roleToHistory.setCapturedBy(roleToUpdate.getCapturedBy());		
 		roleToHistory.setOriginal( roleToUpdate );
 		
-		LoggerService.finest( "Role History start to persist: " + roleToHistory.toString()  );
+		//Updated
+		roleToUpdate.setName( name );
+		roleToUpdate.setCapturedAt(DateService.getCalendar());
+		roleToUpdate.setCapturedBy(capturedBy);
 		
 		//Try to capture
 		try{
 			em.persist( roleToHistory );
+			em.persist( roleToUpdate );
 		}catch(Exception e){
 			EJBPersistenceException persistenceException = new EJBPersistenceException(roleToUpdate, e);
 			LoggerService.severe( persistenceException.getLocalizedMessage());
 			e.printStackTrace();
 			throw persistenceException;
 		}		
-
-		LoggerService.finest( "Role History Update has persisted: " + roleToHistory.toString()  );
-
-		//Updated
-		roleToUpdate.setName( name );
-		roleToUpdate.setCapturedAt(DateService.getCalendar());
-		roleToUpdate.setCapturedBy(capturedBy);
 		
-		LoggerService.finest( "Role Update start to persist: " + roleToUpdate.toString()  );
-		
-		//Try to capture
-		try{
-			em.persist( roleToUpdate );			
-		}catch(Exception e){
-			EJBPersistenceException persistenceException = new EJBPersistenceException(roleToUpdate, e);
-			LoggerService.severe( persistenceException.getLocalizedMessage());
-			e.printStackTrace();
-			throw persistenceException;
-		}
 		LoggerService.finest( "Role Update has persisted: " + roleToUpdate.toString()  );
+		LoggerService.info( "Return: " + LoggerService.getJsonStringFromJavaObject( roleToUpdate ));
 		
 		return roleToUpdate;
 	}
@@ -128,6 +124,8 @@ public class RoleSession implements RoleRemote{
 			
 		@SuppressWarnings("unchecked")
 		List<Role> roleList = q.getResultList();
+		
+		LoggerService.info( "Return: " + JsonService.getJsonStringFromJavaObject(roleList));
 		
 		return roleList;
 

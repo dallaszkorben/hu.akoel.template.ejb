@@ -1,16 +1,29 @@
 package hu.akoel.template.ejb.services;
 
 import hu.akoel.template.ejb.logger.LogFileHandler;
-import hu.akoel.template.ejb.logger.LogHtmlHandler;
 
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class LoggerService {
 
 	private static Logger logger = null;
 
+	public static String getJsonStringFromJavaObject(Object object) {
+		String requestBean = null;
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			requestBean = mapper.writeValueAsString(object);
+		} catch (JsonProcessingException e1) {
+			e1.printStackTrace();
+		}
+		return requestBean;
+	}
+	
 	public static void finest( String message ){
 		getInstance().finest( message );
 	}
@@ -46,17 +59,11 @@ public class LoggerService {
 			logger = Logger.getLogger( "blabla" );
 
 			try {
-				logger.addHandler(new LogFileHandler());
+				logger.addHandler(new LogFileHandler( "../logs/hu.akoel.enta.log" ) );
 			} catch (SecurityException | IOException e1) {
 				// TODO lehet, hogy semmit nem kell tennem vele
 				e1.printStackTrace();
 			}
-			// try {
-			// logger.addHandler(new LogHtmlHandler());
-			// } catch (SecurityException | IOException e) {
-			// // TODO lehet, hogy semmit nem kell tennem vele
-			// e.printStackTrace();
-			// }
 
 			logger.setLevel(Level.ALL);
 	

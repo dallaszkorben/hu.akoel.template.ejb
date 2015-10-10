@@ -7,7 +7,7 @@ import javax.persistence.Query;
 import hu.akoel.template.ejb.entities.Role;
 import hu.akoel.template.ejb.entities.User;
 import hu.akoel.template.ejb.enums.FeatureRight;
-import hu.akoel.template.ejb.exceptions.EJBNotFeatureRightException;
+import hu.akoel.template.ejb.exceptions.EJBNoFeatureRightException;
 import hu.akoel.template.ejb.exceptions.EJBGeneralException;
 import hu.akoel.template.ejb.exceptions.EJBeanException;
 import hu.akoel.template.ejb.exceptions.EJBNoResultFindByIdException;
@@ -44,7 +44,7 @@ public class FeatureRightService {
 		//No Feature Right
 		}catch(NoResultException nre ){
 			nre.printStackTrace();
-			EJBNotFeatureRightException fre = new EJBNotFeatureRightException(userId, necessaryFeatureRight );
+			EJBNoFeatureRightException fre = new EJBNoFeatureRightException(userId, necessaryFeatureRight );
 			throw fre;	
 			
 		//Other problem
