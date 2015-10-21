@@ -9,7 +9,9 @@ import javax.naming.NamingException;
 import hu.akoel.template.ejb.entities.Role;
 import hu.akoel.template.ejb.entities.User;
 import hu.akoel.template.ejb.enums.FeatureRight;
+import hu.akoel.template.ejb.exceptions.EJBDeletedException;
 import hu.akoel.template.ejb.exceptions.EJBNoFeatureRightException;
+import hu.akoel.template.ejb.exceptions.EJBNoResultFindByIdException;
 import hu.akoel.template.ejb.exceptions.EJBeanException;
 import hu.akoel.template.ejb.services.InitialContextService;
 import hu.akoel.template.ejb.test.ExpectedExceptionObject;
@@ -113,7 +115,7 @@ public class TestRole extends TestController{
 	@TestDetails( 
 			testCase="Can not Update a Role",
 			testCondition="User has NO ROLE_UPDATE right",
-			expectedResult="No New Role captured"
+			expectedResult="EJBNoFeatureRightException thrown"
 	)
 	@TestInputSet(value={"test/testdata/testInputSet_MinimalAdmin.xml"})
 	public void testRole_UpdateWithNoRight() throws TestException, NamingException, EJBeanException, IOException, JSONException{
@@ -131,6 +133,47 @@ public class TestRole extends TestController{
 		<Role>doSession();
 	}
 	
+	@Test
+	@TestDetails( 
+			testCase="Can not Update a Role",
+			testCondition="The Role is already deleted",
+			expectedResult="EJBNDeletedException thrown"
+	)
+	@TestInputSet(value={"test/testdata/testInputSet_MinimalAdmin.xml", "test/testdata/role/testInputRole_UpdateDeleted.xml"})
+	public void testRole_UpdateDeletedRole() throws TestException, NamingException, EJBeanException, IOException, JSONException{
+		String newRoleName = "updated_role_name";
+		Integer updateUserId = 1;			//admin user
+		Integer roleId = 2;					//visitor role to update
+	
+		//Parameters for the doCapture Session Method
+		Object[] parameterList = new Object[]{roleId, newRoleName, updateUserId};
+
+		//Invokes the doUpdate Session Method
+		initializeSession( InitialContextService.getRoleSession(), "doUpdate", parameterList ).
+			setExpectedException( new ExpectedExceptionObject(EJBDeletedException.class).setExactMessage("The 'Role' element with name: deleted_role_visitor id: " + roleId + " is already deleted.") ).
+		<Role>doSession();
+	}
+	
+	@Test
+	@TestDetails( 
+			testCase="Can not Update a none existed Role",
+			testCondition="The Role with the specified ID is not existed",
+			expectedResult="EJBNDeletedException thrown"
+	)
+	@TestInputSet(value={"test/testdata/testInputSet_MinimalAdmin.xml"})
+	public void testRole_UpdateNoneExistedRole() throws TestException, NamingException, EJBeanException, IOException, JSONException{
+		String newRoleName = "updated_role_name";
+		Integer updateUserId = 1;			//admin user
+		Integer roleId = 3;					//none existed role to update
+	
+		//Parameters for the doCapture Session Method
+		Object[] parameterList = new Object[]{roleId, newRoleName, updateUserId};
+
+		//Invokes the doUpdate Session Method
+		initializeSession( InitialContextService.getRoleSession(), "doUpdate", parameterList ).
+			setExpectedException( new ExpectedExceptionObject(EJBNoResultFindByIdException.class).setExactMessage( "No found element by Id: em.find(" + Role.class.getCanonicalName() + ".class, " + roleId + ") has no result.") ).
+		<Role>doSession();
+	}
 	//
 	// --- DELETE --
 	//

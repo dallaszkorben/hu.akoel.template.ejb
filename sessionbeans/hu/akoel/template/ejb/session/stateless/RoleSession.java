@@ -14,6 +14,7 @@ import hu.akoel.template.ejb.entities.Role;
 import hu.akoel.template.ejb.entities.User;
 import hu.akoel.template.ejb.enums.FeatureRight;
 import hu.akoel.template.ejb.exceptions.EJBDeletedException;
+import hu.akoel.template.ejb.exceptions.EJBNoResultFindByIdException;
 import hu.akoel.template.ejb.exceptions.EJBeanException;
 import hu.akoel.template.ejb.exceptions.EJBPersistenceException;
 import hu.akoel.template.ejb.services.DateService;
@@ -82,12 +83,18 @@ public class RoleSession implements RoleRemote{
 		
 		Role roleToUpdate;
 		roleToUpdate = em.find( Role.class, roleId );
+ 		
+		//If the Role is not found
+		if( null == roleToUpdate )		{
+			EJBNoResultFindByIdException e = new EJBNoResultFindByIdException( Role.class, roleId );			
+			LoggerService.severe( e.getLocalizedMessage() );
+			throw e;
 		
 		//If the Role is not active
-		if( !roleToUpdate.getActive() ){
+		}else if( !roleToUpdate.getActive() ){
 			EJBDeletedException e = new EJBDeletedException( Role.class, roleId, roleToUpdate.getName() );			
 			LoggerService.severe( e.getLocalizedMessage() );
-			return null;
+			throw e;
 		}
 		
 		//History
@@ -135,7 +142,7 @@ public class RoleSession implements RoleRemote{
 		if( !roleToDelete.getActive() ){
 			EJBDeletedException e = new EJBDeletedException( Role.class, roleId, roleToDelete.getName() );			
 			LoggerService.severe( e.getLocalizedMessage() );
-			return null;
+			throw e;
 		}
 		
 		//History

@@ -7,7 +7,8 @@ import hu.akoel.template.ejb.test.exception.TestCompareXMLToDBException;
 import hu.akoel.template.ejb.test.exception.TestCompareXMLToDBFormatException;
 import hu.akoel.template.ejb.test.exception.TestException;
 import hu.akoel.template.ejb.test.exception.TestNoExceptionException;
-import hu.akoel.template.ejb.test.exception.TestNotExpectedException;
+import hu.akoel.template.ejb.test.exception.TestNotExpectedExceptionException;
+import hu.akoel.template.ejb.test.exception.TestNotExpectedExceptionMessageException;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -156,9 +157,9 @@ public class TestController{
 
 		try {
 			  actualResult = (E) method.invoke(session, parameterList);
-System.out.println("--- Result ---");
-System.out.println( JsonService.getJsonStringFromJavaObject( actualResult ) );
-System.out.println("--------------");
+			  System.out.println("--- Result ---");
+			  System.out.println( JsonService.getJsonStringFromJavaObject( actualResult ) );
+			  System.out.println("--------------");
 			  if( null != expectedException ){
 				  throw new TestNoExceptionException( expectedException.getExpectedClass().toString() );
 			  }
@@ -171,16 +172,16 @@ System.out.println("--------------");
 			
 			//There was an exception but was not defined the expected OR it was not the expected !!!!
 			if( null == expectedException || !targetException.getClass().equals( expectedException.getExpectedClass()) ){				
-				throw new TestNotExpectedException( targetException.getLocalizedMessage() );
+				throw new TestNotExpectedExceptionException( expectedException.getClass().getSimpleName(), targetException.getClass().getSimpleName() );
 			
 			//The exception was the expected but probably the message was different	
 			}else{
 				
 				String expectedMessage = expectedException.getExactMessage();
-				
+
 				//The exact message was specified but it not the same as the catched
 				if( null != expectedMessage && !expectedMessage.equals( targetException.getMessage() ) ){
-					throw new TestNotExpectedException( targetException.getLocalizedMessage() );
+					throw new TestNotExpectedExceptionMessageException( expectedMessage, targetException.getLocalizedMessage() );
 				}
 				
 			}
