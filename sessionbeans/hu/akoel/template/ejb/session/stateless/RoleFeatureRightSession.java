@@ -50,8 +50,8 @@ public class RoleFeatureRightSession implements RoleFeatureRightRemote{
 		roleFeatureRight.setRole(role);
 		roleFeatureRight.setFeatureRight(featureRight);
 		
-		roleFeatureRight.setCapturedAt(DateService.getCalendar());
-		roleFeatureRight.setCapturedBy(capturedBy);
+		roleFeatureRight.setOperationAt(DateService.getCalendar());
+		roleFeatureRight.setOperationBy(capturedBy);
 		
 		//Try to capture
 		try{

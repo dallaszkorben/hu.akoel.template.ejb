@@ -14,7 +14,8 @@ import hu.akoel.template.ejb.exceptions.EJBeanException;
 import hu.akoel.template.ejb.services.InitialContextService;
 import hu.akoel.template.ejb.test.ExpectedExceptionObject;
 import hu.akoel.template.ejb.test.TestController;
-import hu.akoel.template.ejb.test.annotation.InputSet;
+import hu.akoel.template.ejb.test.annotation.TestDetails;
+import hu.akoel.template.ejb.test.annotation.TestInputSet;
 import hu.akoel.template.ejb.test.exception.TestException;
 
 import org.json.JSONException;
@@ -28,16 +29,17 @@ public class TestRole extends TestController{
 
 	}
 	
-	/**
-	 * Test case:		Capture a Role
-	 * Condition:		User has ROLE_CAPTURE right
-	 * Expected result:	New Role captured
-	 * @throws EJBeanException 
-	 * @throws JSONException 
-	 * @throws IOException 
-	 */
+	//
+	// --- CAPTURE ---
+	//
+	
 	@Test
-	@InputSet(value={"test/testdata/testInputSet_MinimalAdmin.xml"})
+	@TestDetails( 
+			testCase="Capture a Role",
+			testCondition="User has ROLE_CAPTURE right",
+			expectedResult="New Role captured"
+	)
+	@TestInputSet(value={"test/testdata/testInputSet_MinimalAdmin.xml"})
 	public void testRole_Capture() throws TestException, NamingException, EJBeanException, IOException, JSONException{
 		String newRoleName = "role_new";
 		Integer captureUserId = 1;			//admin user
@@ -47,8 +49,8 @@ public class TestRole extends TestController{
 		user.setId(1);		
 		Role expectedResultRole = new Role();
 		expectedResultRole.setName( newRoleName);
-		expectedResultRole.setCapturedBy( user );
-		expectedResultRole.setCapturedAt(new GregorianCalendar(2001,0,1));
+		expectedResultRole.setOperationBy( user );
+		expectedResultRole.setOperationAt(new GregorianCalendar(2001,0,1));
 		
 		//Parameters for the doCapture Session Method
 		Object[] parameterList = new Object[]{newRoleName, captureUserId};
@@ -57,19 +59,16 @@ public class TestRole extends TestController{
 		initializeSession( InitialContextService.getRoleSession(), "doCapture", parameterList).
 			setExpectedXMLDBSet("test/testdata/role/testCompareRole_Capture.xml").
 			setExpectedJsonObject("test/testdata/role/testCompareRole_Capture.json").
-			<Role>doSession();		
-
+			<Role>doSession();
 	}
 	
-	/**
-	 * Test case:		Can not Capture a Role
-	 * Condition:		User has NO ROLE_CAPTURE
-	 * Expected result:	No New Role captured
-	 * @throws JSONException 
-	 * @throws IOException 
-	 */
 	@Test
-	@InputSet(value={"test/testdata/testInputSet_MinimalAdmin.xml"})
+	@TestDetails( 
+			testCase="Can not Capture a Role",
+			testCondition="User has NO ROLE_CAPTURE",
+			expectedResult="No New Role captured"
+	)
+	@TestInputSet(value={"test/testdata/testInputSet_MinimalAdmin.xml"})
 	public void testRole_CaptureWithNoRight() throws NamingException, TestException, IOException, JSONException{
 		String newRoleName = "role_new";
 		Integer captureUserId = 2;			//visitor user
@@ -84,18 +83,17 @@ public class TestRole extends TestController{
 		<Role>doSession();		
 	}	
 
-	/**
-	 * Test case:		Update a Role
-	 * Condition:		User has ROLE_UPDATE right
-	 * Expected result:	The Role is Updated
-	 * @throws TestException
-	 * @throws NamingException
-	 * @throws EJBeanException
-	 * @throws IOException
-	 * @throws JSONException
-	 */
+	//
+	// --- UPDATE ---
+	//
+	
 	@Test
-	@InputSet(value={"test/testdata/testInputSet_MinimalAdmin.xml"})
+	@TestDetails( 
+			testCase="Update a Role",
+			testCondition="User has ROLE_UPDATE right",
+			expectedResult="The Role is Updated"
+	)
+	@TestInputSet(value={"test/testdata/testInputSet_MinimalAdmin.xml"})
 	public void testRole_Update() throws TestException, NamingException, EJBeanException, IOException, JSONException{
 		String newRoleName = "updated_role_name";
 		Integer updateUserId = 1;			//admin user
@@ -107,22 +105,17 @@ public class TestRole extends TestController{
 		//Invokes the doUpdate Session Method
 		initializeSession( InitialContextService.getRoleSession(), "doUpdate", parameterList ).
 			setExpectedXMLDBSet( "test/testdata/role/testCompareRole_Update.xml" ).
-			setExpectedJsonObject("test/testdata/role/testCompareRole_DoUpdate.json").
+			setExpectedJsonObject("test/testdata/role/testCompareRole_Update.json").
 		<Role>doSession();
 	}
 
-	/**
-	 * Test case:		Can not Update a Role
-	 * Condition:		User has NO ROLE_UPDATE right
-	 * Expected result:	No New Role captured
-	 * @throws TestException
-	 * @throws NamingException
-	 * @throws EJBeanException
-	 * @throws IOException
-	 * @throws JSONException
-	 */
 	@Test
-	@InputSet(value={"test/testdata/testInputSet_MinimalAdmin.xml"})
+	@TestDetails( 
+			testCase="Can not Update a Role",
+			testCondition="User has NO ROLE_UPDATE right",
+			expectedResult="No New Role captured"
+	)
+	@TestInputSet(value={"test/testdata/testInputSet_MinimalAdmin.xml"})
 	public void testRole_UpdateWithNoRight() throws TestException, NamingException, EJBeanException, IOException, JSONException{
 		String newRoleName = "updated_role_name";
 		Integer updateUserId = 2;			//visitor user
@@ -138,18 +131,64 @@ public class TestRole extends TestController{
 		<Role>doSession();
 	}
 	
-	/**
-	 * Test case:		Get the history of the specific Role
-	 * Condition:		User has ROLE_READ right
-	 * Expected result:	You get back the History of the Role
-	 * @throws TestException
-	 * @throws NamingException
-	 * @throws EJBeanException
-	 * @throws JSONException
-	 * @throws IOException
-	 */
+	//
+	// --- DELETE --
+	//
+	
 	@Test
-	@InputSet(value={"test/testdata/testInputSet_MinimalAdmin.xml", "test/testdata/role/testInputRole_GetHistory.xml"})
+	@TestDetails( 
+			testCase="Delete a Role",
+			testCondition="User has ROLE_DELETE right",
+			expectedResult="The Active field of the Role is false"
+	)
+	@TestInputSet(value={"test/testdata/testInputSet_MinimalAdmin.xml"})
+	public void testRole_Delete() throws TestException, NamingException, EJBeanException, IOException, JSONException{
+		Integer deleteUserId = 1;			//admin user
+		Integer roleId = 2;					//visitor role to delete
+	
+		//Parameters for the doDelete Session Method
+		Object[] parameterList = new Object[]{roleId, deleteUserId};
+
+		//Invokes the doDelete Session Method
+		initializeSession( InitialContextService.getRoleSession(), "doDelete", parameterList ).
+			setExpectedXMLDBSet( "test/testdata/role/testCompareRole_Delete.xml" ).
+			setExpectedJsonObject("test/testdata/role/testCompareRole_Delete.json").
+		<Role>doSession();
+	}
+
+	@Test
+	@TestDetails( 
+			testCase="Delete a Role",
+			testCondition="User has NO ROLE_DELETE right",
+			expectedResult="The Active field of the Role is still true"
+	)
+	@TestInputSet(value={"test/testdata/testInputSet_MinimalAdmin.xml"})
+	public void testRole_DeleteWithNoRight() throws TestException, NamingException, EJBeanException, IOException, JSONException{
+		Integer deleteUserId = 2;			//visitor user
+		Integer roleId = 1;					//admin role to delete
+	
+		//Parameters for the doDlete Session Method
+		Object[] parameterList = new Object[]{roleId, deleteUserId};
+
+		//Invokes the doDelete Session Method
+		initializeSession( InitialContextService.getRoleSession(), "doDelete", parameterList ).
+			setExpectedXMLDBSet( "test/testdata/role/testCompareRole_DeleteWithNoRight.xml" ).
+			setExpectedException( new ExpectedExceptionObject(EJBNoFeatureRightException.class).setExactMessage("The User id=" + deleteUserId + " has no '" + FeatureRight.ROLE_DELETE.getLocalized() + "' Feature Right.") ).
+		<Role>doSession();
+	}
+	
+	
+	//
+	// --- GETHISTORY ---
+	//	
+
+	@Test
+	@TestDetails( 
+			testCase="Get the history of the specific Role",
+			testCondition="User has ROLE_READ right",
+			expectedResult="You get back the History of the Role"
+	)
+	@TestInputSet(value={"test/testdata/testInputSet_MinimalAdmin.xml", "test/testdata/role/testInputRole_GetHistory.xml"})
 	public void testRole_GetHistory() throws TestException, NamingException, EJBeanException, JSONException, IOException{
 		Integer userId = 1;			//admin user
 		Integer roleId = 2;			//visitor role to check
@@ -164,7 +203,12 @@ public class TestRole extends TestController{
 	}
 
 	@Test
-	@InputSet(value={"test/testdata/testInputSet_MinimalAdmin.xml", "test/testdata/role/testInputRole_GetHistory.xml"})
+	@TestDetails( 
+			testCase="Can not get the history of the specific Role",
+			testCondition="User has NO ROLE_READ right",
+			expectedResult="EJBNoFeatureRightException"
+	)
+	@TestInputSet(value={"test/testdata/testInputSet_MinimalAdmin.xml", "test/testdata/role/testInputRole_GetHistory.xml"})
 	public void testRole_GetHistoryWithNoRight() throws TestException, NamingException, EJBeanException, JSONException, IOException{
 		Integer userId = 2;			//visitor user
 		Integer roleId = 2;			//visitor role to check

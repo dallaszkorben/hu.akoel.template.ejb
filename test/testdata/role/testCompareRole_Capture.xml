@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSet>
-	<role id="1" name="role_admin" capturedat="2001-01-01 00:00:00" >
-		<capturedby_id xsi:nill="true"/>
+	<role id="1" name="role_admin" operationat="2001-01-01 00:00:00" active="true">
+		<operationby_id xsi:nill="true"/>
 	</role>
-	<role id="2" name="role_visitor" capturedat="2001-01-01 00:00:00">
-		<capturedby_id xsi:nill="true"/>
+	<role id="2" name="role_visitor" operationat="2001-01-01 00:00:00" active="true">
+		<operationby_id xsi:nill="true"/>
 	</role>
-	<role name="role_new" capturedby_id="1"/>
+	<role name="role_new" operationby_id="1" active="true"/>
 </dataSet>

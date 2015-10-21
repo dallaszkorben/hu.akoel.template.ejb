@@ -11,34 +11,60 @@
 		<!-- role_visitor -->
 		<update schemaName="public" tableName="role">
 			<column name="name" value="latest_role_visitor" />						
-			<column name="capturedat" value="2012-03-24" />
-			<column name="capturedby_id" value="1" />			
+			<column name="operationat" value="2012-03-24" />
+			<column name="operationby_id" value="1" />			
 			<where>id='2'</where>			
 		</update>
-			<insert schemaName="public" tableName="role">
+		<insert schemaName="public" tableName="role">
 			<column name="id" value="102" />
 			<column name="name" value="role_visitor3" />
 			<column name="original_id" value="2" />
 						
-			<column name="capturedat" value="2007-11-22" />
-			<column name="capturedby_id" value="1" />
+			<column name="operationat" value="2007-11-22" />
+			<column name="operationby_id" value="1" />
 		</insert>			
 		<insert schemaName="public" tableName="role">
 			<column name="id" value="101" />
 			<column name="name" value="role_visitor2" />
 			<column name="original_id" value="2" />
 						
-			<column name="capturedat" value="2001-04-07" />
-			<column name="capturedby_id" value="1" />
+			<column name="operationat" value="2001-04-07" />
+			<column name="operationby_id" value="1" />
 		</insert>		
 		<insert schemaName="public" tableName="role">
 			<column name="id" value="100" />
 			<column name="name" value="role_visitor1" />
 			<column name="original_id" value="2" />
 						
-			<column name="capturedat" value="2001-01-01" />
+			<column name="operationat" value="2001-01-01" />
 		</insert>
 
+		<!-- role_guest -->
+		<insert schemaName="public" tableName="role">
+			<column name="id" value="51" />
+			<column name="name" value="role_guest" />
+						
+			<column name="operationat" value="2015-10-22" />
+			<column name="operationby_id" value="1" />
+			<column name="active" value="true" />
+		</insert>		
+		<insert schemaName="public" tableName="role">
+			<column name="id" value="52" />
+			<column name="name" value="role_my_guest" />
+			<column name="original_id" value="51" />
+						
+			<column name="operationat" value="2013-11-22" />
+			<column name="operationby_id" value="1" />
+		</insert>		
+		<insert schemaName="public" tableName="role">
+			<column name="id" value="53" />
+			<column name="name" value="role_guest" />
+			<column name="original_id" value="51" />
+						
+			<column name="operationat" value="2014-11-22" />
+			<column name="operationby_id" value="1" />
+		</insert>		
+		
 		<rollback>
 <!-- 			<dropTable cascadeConstraints="true" tableName="rolefeatureright"/> -->
 <!-- 			<dropTable cascadeConstraints="true" tableName="users"/> -->

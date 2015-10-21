@@ -19,6 +19,11 @@ public class FeatureRightService {
 		User user = null;
 		try{
 			user = em.find( User.class, userId );
+			
+			//In not active the user or not active the role
+			if( !user.getActive() || !user.getRole().getActive() ){
+				user = null;
+			}
 		}catch (Exception e){
 			e.printStackTrace();
 			EJBGeneralException generalException = new EJBGeneralException(e);						
@@ -34,7 +39,7 @@ public class FeatureRightService {
 		Role role = user.getRole();
 		try{
 			//TODO handle the deleted
-			Query q = em.createQuery("SELECT rfr FROM RoleFeatureRight rfr WHERE rfr.role= :role AND rfr.featureRight= :featureRight");			
+			Query q = em.createQuery("SELECT rfr FROM RoleFeatureRight rfr WHERE rfr.active=true AND rfr.role= :role AND rfr.featureRight= :featureRight");			
 			q.setParameter("role", role);
 			q.setParameter("featureRight", necessaryFeatureRight);
 			

@@ -21,7 +21,8 @@
 			<column name="id" value="1" />
 			<column name="name" value="role_admin" />
 						
-			<column name="capturedat" value="2001-01-01" />
+			<column name="operationat" value="2001-01-01" />
+			<column name="active" value="true" />
 		</insert>
 		
 		<!-- role_visitor -->
@@ -29,7 +30,8 @@
 			<column name="id" value="2" />
 			<column name="name" value="role_visitor" />
 						
-			<column name="capturedat" value="2001-01-01" />
+			<column name="operationat" value="2001-01-01" />
+			<column name="active" value="true" />
 		</insert>
 				
 		<!--====================-->
@@ -41,53 +43,41 @@
 			<column name="role_id" value="1" />
 			<column name="featureright" value="ROLE_CAPTURE" />
 					
-			<column name="capturedat" value="2001-01-01" />
+			<column name="operationat" value="2001-01-01" />
+			<column name="active" value="true" />
 		</insert>
 		<insert schemaName="public" tableName="rolefeatureright">
 			<column name="id" value="1002" />
 			<column name="role_id" value="1" />
 			<column name="featureright" value="ROLE_UPDATE" />
 					
-			<column name="capturedat" value="2001-01-01" />
-		</insert>		
+			<column name="operationat" value="2001-01-01" />
+			<column name="active" value="true" />
+		</insert>
 		<insert schemaName="public" tableName="rolefeatureright">
 			<column name="id" value="1003" />
 			<column name="role_id" value="1" />
+			<column name="featureright" value="ROLE_DELETE" />
+					
+			<column name="operationat" value="2001-01-01" />
+			<column name="active" value="true" />
+		</insert>		
+		<insert schemaName="public" tableName="rolefeatureright">
+			<column name="id" value="1004" />
+			<column name="role_id" value="1" />
 			<column name="featureright" value="ROLE_READ" />
 					
-			<column name="capturedat" value="2001-01-01" />
+			<column name="operationat" value="2001-01-01" />
+			<column name="active" value="true" />
 		</insert>
-		
-		<!-- user_admin /  -->
-		<insert schemaName="public" tableName="rolefeatureright">
-			<column name="id" value="1101" />
-			<column name="role_id" value="1" />
-			<column name="featureright" value="USER_CAPTURE" />
-					
-			<column name="capturedat" value="2001-01-01" />
-		</insert>		
-		<insert schemaName="public" tableName="rolefeatureright">
-			<column name="id" value="1102" />
-			<column name="role_id" value="1" />
-			<column name="featureright" value="USER_UPDATE" />
-					
-			<column name="capturedat" value="2001-01-01" />
-		</insert>		
-		<insert schemaName="public" tableName="rolefeatureright">
-			<column name="id" value="1103" />
-			<column name="role_id" value="1" />
-			<column name="featureright" value="USER_READ" />
-					
-			<column name="capturedat" value="2001-01-01" />
-		</insert>		
-		
 		
 		<insert schemaName="public" tableName="rolefeatureright">
 			<column name="id" value="1201" />
 			<column name="role_id" value="1" />
 			<column name="featureright" value="FEATURERIGHT_CAPTURE" />
 					
-			<column name="capturedat" value="2001-01-01" />
+			<column name="operationat" value="2001-01-01" />
+			<column name="active" value="true" />
 		</insert>
 		
 		<!--========-->
@@ -103,7 +93,8 @@
 			<column name="firstname" value="admin" />
 			<column name="surname" value="user" />
 			
-			<column name="capturedat" value="2001-01-01" />			
+			<column name="operationat" value="2001-01-01" />
+			<column name="active" value="true" />		
 		</insert>
 		
 		<!-- visitor 	-->
@@ -116,8 +107,9 @@
 			<column name="firstname" value="" />
 			<column name="surname" value="" />
 			
-			<column name="capturedby_id" value="1" />
-			<column name="capturedat" value="2012-03-04" />			
+			<column name="operationby_id" value="1" />
+			<column name="operationat" value="2012-03-04" />
+			<column name="active" value="true" />		
 		</insert>	
 		
 		<rollback>

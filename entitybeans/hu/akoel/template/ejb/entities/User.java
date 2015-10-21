@@ -1,9 +1,6 @@
 package hu.akoel.template.ejb.entities;
 
-import hu.akoel.template.ejb.services.DateService;
 import hu.akoel.template.ejb.services.JsonService;
-import hu.akoel.template.ejb.services.LocalizeService;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,10 +11,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
-//@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 @Entity
 @Table(name="users")
 public class User extends HistoryMappedSuperclass<User>{
@@ -108,7 +101,7 @@ public class User extends HistoryMappedSuperclass<User>{
         return false;
 	}
 	
-	@Override
+/*	@Override
 	public boolean equalsByThisNotNullFields(Object otherObject) {
 		if( null != otherObject && otherObject instanceof User ){
 			User other = (User)otherObject;
@@ -126,7 +119,7 @@ public class User extends HistoryMappedSuperclass<User>{
 		}
 		return false;
 	}
-	
+*/	
 	@Override
 	public String toString(){
 		//StringBuffer out = new StringBuffer();

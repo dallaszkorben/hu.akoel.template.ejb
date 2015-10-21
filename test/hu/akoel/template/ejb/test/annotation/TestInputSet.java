@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention( value = RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)					//Can be used only in method
-public @interface InputSet {
+public @interface TestInputSet {
 
 	public String[] value() default "";		//Attribute is "value"
 }

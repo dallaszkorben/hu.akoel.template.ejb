@@ -1,7 +1,8 @@
 package hu.akoel.template.ejb.test;
 
 import hu.akoel.template.ejb.services.InitialContextService;
-import hu.akoel.template.ejb.test.annotation.InputSet;
+import hu.akoel.template.ejb.services.JsonService;
+import hu.akoel.template.ejb.test.annotation.TestInputSet;
 import hu.akoel.template.ejb.test.exception.TestCompareXMLToDBException;
 import hu.akoel.template.ejb.test.exception.TestCompareXMLToDBFormatException;
 import hu.akoel.template.ejb.test.exception.TestException;
@@ -67,7 +68,7 @@ public class TestController{
 			//--------------------
 			// Gain liquidbaseList
 			//--------------------
-			InputSet dataSetAnnnotation = (InputSet)description.getAnnotation(InputSet.class);
+			TestInputSet dataSetAnnnotation = (TestInputSet)description.getAnnotation(TestInputSet.class);
 			if( null != dataSetAnnnotation ){
 				for( String value: dataSetAnnnotation.value() ){
 					//databaseChangeLogXmlList.add( value );
@@ -155,7 +156,9 @@ public class TestController{
 
 		try {
 			  actualResult = (E) method.invoke(session, parameterList);
-			  
+System.out.println("--- Result ---");
+System.out.println( JsonService.getJsonStringFromJavaObject( actualResult ) );
+System.out.println("--------------");
 			  if( null != expectedException ){
 				  throw new TestNoExceptionException( expectedException.getExpectedClass().toString() );
 			  }
@@ -174,7 +177,6 @@ public class TestController{
 			}else{
 				
 				String expectedMessage = expectedException.getExactMessage();
-				ArrayList<String> partialMessage = expectedException.getPartialMessage();
 				
 				//The exact message was specified but it not the same as the catched
 				if( null != expectedMessage && !expectedMessage.equals( targetException.getMessage() ) ){

@@ -10,18 +10,15 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
-@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="jsonId")
 @MappedSuperclass
 public abstract class HistoryMappedSuperclass<T> implements Serializable, EntityObject{
 	
 	private static final long serialVersionUID = -7475211103263566166L;
 	
-	private Calendar capturedAt;
-	private User capturedBy;
+	private Calendar operationAt;
+	private User operationBy;
 	private T original;
+	private Boolean active;
 	
 	@JoinColumn(name="original_id", nullable=true)
 	public T getOriginal(){
@@ -32,25 +29,34 @@ public abstract class HistoryMappedSuperclass<T> implements Serializable, Entity
 	}
 	
 	@Temporal( TemporalType.TIMESTAMP)
-	@Column(name="capturedat", nullable=false)
-	public Calendar getCapturedAt(){
-		return capturedAt;
+	@Column(name="operationat", nullable=false)
+	public Calendar getOperationAt(){
+		return operationAt;
 	}
-	public void setCapturedAt(Calendar capturedAt){
-		this.capturedAt = capturedAt;
+	public void setOperationAt(Calendar operationAt){
+		this.operationAt = operationAt;
 	}
 	
 	@ManyToOne(optional=true)
-	@JoinColumn(name="capturedby_id", nullable=true)
+	@JoinColumn(name="operationby_id", nullable=true)
 	//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "name")
-	public User getCapturedBy(){
-		return capturedBy;
+	public User getOperationBy(){
+		return operationBy;
 	}
-	public void setCapturedBy(User capturedBy){
-		this.capturedBy = capturedBy;
+	public void setOperationBy(User operationBy){
+		this.operationBy = operationBy;
+	}
+	
+	@Column(name="active", nullable=true)
+	public Boolean getActive() {
+		return active;
+	}
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 	
 	public abstract boolean equals( final Object otherObject );
 	
 	public abstract String toString();
+
 }

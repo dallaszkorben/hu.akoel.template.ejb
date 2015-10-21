@@ -1,9 +1,8 @@
 {
     "jsonId": 1,
-    "capturedBy": {
-        "jsonId": 2,
-        "capturedAt": 978303600000,
-        "capturedBy": null,
+    "operationBy": {
+        "operationAt": 978303600000,
+        "operationBy": null,
         "original": null,
         "id": 1,
         "name": "adminuser",

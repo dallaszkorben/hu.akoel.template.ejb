@@ -1,7 +1,6 @@
 package hu.akoel.template.ejb.entities;
 
 import hu.akoel.template.ejb.enums.FeatureRight;
-import hu.akoel.template.ejb.services.DateService;
 import hu.akoel.template.ejb.services.JsonService;
 
 import javax.persistence.Column;
@@ -17,9 +16,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.eclipse.persistence.annotations.Index;
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 //@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 @Entity
@@ -81,7 +77,7 @@ public class RoleFeatureRight extends HistoryMappedSuperclass<RoleFeatureRight> 
         return false;
 	}
 	
-	@Override
+/*	@Override
 	public boolean equalsByThisNotNullFields(Object otherObject) {
 		if( null != otherObject && otherObject instanceof RoleFeatureRight ){
 			RoleFeatureRight other = (RoleFeatureRight)otherObject;
@@ -95,6 +91,7 @@ public class RoleFeatureRight extends HistoryMappedSuperclass<RoleFeatureRight> 
 		}
 		return false;
 	}
+*/
 	
 	public String toString(){
 		//StringBuffer out = new StringBuffer();

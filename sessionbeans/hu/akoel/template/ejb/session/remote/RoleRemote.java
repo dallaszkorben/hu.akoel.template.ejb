@@ -14,5 +14,7 @@ public interface RoleRemote {
 	
 	public Role doUpdate(Integer roleId, String name, Integer updateById) throws EJBeanException;
 
+	public Role doDelete( Integer roleId, Integer deleteById ) throws EJBeanException;
+	
 	public List<Role> getHistory( Integer roleId, Integer userId )throws EJBeanException ;
 }

@@ -53,8 +53,8 @@ public class UserSession implements UserRemote{
 		user.setFirstname(firstName);
 		user.setSurname(surname);
 		user.setEmail(email);
-		user.setCapturedAt(DateService.getCalendar());
-		user.setCapturedBy(capturedBy);
+		user.setOperationAt(DateService.getCalendar());
+		user.setOperationBy(capturedBy);
 
 		LoggerService.finest( "User Capture start to persist: " + user.toString()  );
 		

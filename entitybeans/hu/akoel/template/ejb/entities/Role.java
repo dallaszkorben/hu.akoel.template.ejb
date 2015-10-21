@@ -9,10 +9,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
-//@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="jsonId")
 @Entity
-@Table(name="role")
+@Table(
+		name="role",  
+		uniqueConstraints=@UniqueConstraint(columnNames={"name", "active"}))
 public class Role extends HistoryMappedSuperclass<Role> implements EntityObject{
 
 	private static final long serialVersionUID = -8046466070317090805L;
@@ -31,7 +37,7 @@ public class Role extends HistoryMappedSuperclass<Role> implements EntityObject{
 		this.id = id;
 	}
 	
-	@Column(nullable=false, unique=true)
+	@Column(nullable=false, unique=false)
 	public String getName() {
 		return name;
 	}
@@ -56,7 +62,7 @@ public class Role extends HistoryMappedSuperclass<Role> implements EntityObject{
         return false;
 	}
 	
-	@Override
+/*	@Override
 	public boolean equalsByThisNotNullFields(Object otherObject) {
 		if( null != otherObject && otherObject instanceof Role ){
 			Role other = (Role)otherObject;
@@ -69,7 +75,7 @@ public class Role extends HistoryMappedSuperclass<Role> implements EntityObject{
 		}
 		return false;
 	}
-	
+*/	
 	public String toString(){
 		//StringBuffer out = new StringBuffer();
 		//out.append("Role = id: " + this.getId() );
