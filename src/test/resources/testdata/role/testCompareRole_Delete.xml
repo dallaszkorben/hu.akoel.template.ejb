@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSet>
+	<role name="role_visitor" operationat="2001-01-01 00:00:00" original_id="2">
+		<operationby_id xsi:nill="true"/>
+		<active xsi:nill="true"/>
+	</role>
+	<role id="2" name="role_visitor" active="false" operationby_id="1" >
+		<original_id xsi:nill="true"/>
+	</role>
+	<role id="1" name="role_admin" active="true" operationat="2001-01-01 00:00:00" >
+		<original_id xsi:nill="true"/>
+		<operationby_id xsi:nill="true"/>
+		<original_id xsi:nill="true"/>
+	</role>
+</dataSet>

@@ -1,0 +1,82 @@
+[
+    {
+        "jsonId": 1,
+        "operationBy": {
+            "operationBy": null,
+            "original": null,
+            "active": true,
+            "id": 1,
+            "name": "adminuser",
+            "password": "***",
+            "email": "adminuser@somewhe.re",
+            "surname": "user",
+            "firstname": "admin",
+            "role": {
+                "jsonId": 2,
+                "operationBy": null,
+                "original": null,
+                "active": true,
+                "id": 1,
+                "name": "role_admin",
+                "operationAt": "2001-01-01 12:00:00"
+            },
+            "operationAt": "2001-01-01 12:00:00"
+        },
+        "original": null,
+        "active": true,
+        "id": 2,
+        "name": "latest_role_visitor",
+        "operationAt": "2012-03-24 12:00:00"
+    },
+    {
+        "jsonId": 3,
+        "operationBy": {
+            "operationBy": null,
+            "original": null,
+            "active": true,
+            "id": 1,
+            "name": "adminuser",
+            "password": "***",
+            "email": "adminuser@somewhe.re",
+            "surname": "user",
+            "firstname": "admin",
+            "role": 2,
+            "operationAt": "2001-01-01 12:00:00"
+        },
+        "original": 1,
+        "active": null,
+        "id": 102,
+        "name": "role_visitor3",
+        "operationAt": "2007-11-22 12:00:00"
+    },
+    {
+        "jsonId": 4,
+        "operationBy": {
+            "operationBy": null,
+            "original": null,
+            "active": true,
+            "id": 1,
+            "name": "adminuser",
+            "password": "***",
+            "email": "adminuser@somewhe.re",
+            "surname": "user",
+            "firstname": "admin",
+            "role": 2,
+            "operationAt": "2001-01-01 12:00:00"
+        },
+        "original": 1,
+        "active": null,
+        "id": 101,
+        "name": "role_visitor2",
+        "operationAt": "2001-04-07 12:00:00"
+    },
+    {
+        "jsonId": 5,
+        "operationBy": null,
+        "original": 1,
+        "active": null,
+        "id": 100,
+        "name": "role_visitor1",
+        "operationAt": "2001-01-01 12:00:00"
+    }
+]

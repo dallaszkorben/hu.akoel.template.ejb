@@ -1,0 +1,28 @@
+{
+    "jsonId": 1,
+    "operationBy": {
+        "operationAt": "2001-01-01 12:00:00",
+        "operationBy": null,
+        "original": null,
+        "active": true,
+        "id": 1,
+        "name": "adminuser",
+        "password": "***",
+        "email": "adminuser@somewhe.re",
+        "surname": "user",
+        "firstname": "admin",
+        "role": {
+            "jsonId": 2,
+            "operationAt": "2001-01-01 12:00:00",
+            "operationBy": null,
+            "original": null,
+            "active": true,
+            "id": 1,
+            "name": "role_admin"
+        }
+    },
+    "original": null,
+    "active": false,
+    "id": 2,
+    "name": "role_visitor"
+}

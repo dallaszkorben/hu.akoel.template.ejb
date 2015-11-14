@@ -1,0 +1,18 @@
+{
+    "jsonId": 1,
+    "operationBy": {
+        "operationAt": "2001-01-01 12:00:00",
+        "operationBy": null,
+        "original": null,
+        "id": 1,
+        "name": "adminuser",
+        "password": "***",
+        "email": "adminuser@somewhe.re",
+        "surname": "user",
+        "firstname": "admin",
+        "role": 1
+    },
+    "original": null,
+    "id": 1,
+    "name": "updated_role_name"
+}

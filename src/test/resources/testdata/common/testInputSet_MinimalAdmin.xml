@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+	<changeSet id="testdata" author="bar">
+		
+		<sql endDelimiter="\nGO" splitStatements="true" stripComments="true">
+        	TRUNCATE  
+				Users,
+				RoleFeatureRight, 
+				Role 
+			CASCADE; 
+			COMMIT;
+    	</sql>
+		
+		<!--========-->
+		<!-- Role	-->
+		<!--========-->
+		<!-- role_admin -->
+		<insert schemaName="public" tableName="role">
+			<column name="id" value="1" />
+			<column name="name" value="role_admin" />
+						
+			<column name="operationat" value="2001-01-01" />
+			<column name="active" value="true" />
+		</insert>
+		
+		<!-- role_visitor -->
+		<insert schemaName="public" tableName="role">
+			<column name="id" value="2" />
+			<column name="name" value="role_visitor" />
+						
+			<column name="operationat" value="2001-01-01" />
+			<column name="active" value="true" />
+		</insert>
+				
+		<!--====================-->
+		<!-- RoleFeatureRight	-->
+		<!--====================-->
+		<!-- role_admin /  -->
+		<insert schemaName="public" tableName="rolefeatureright">
+			<column name="id" value="1001" />
+			<column name="role_id" value="1" />
+			<column name="featureright" value="ROLE_CAPTURE" />
+					
+			<column name="operationat" value="2001-01-01" />
+			<column name="active" value="true" />
+		</insert>
+		<insert schemaName="public" tableName="rolefeatureright">
+			<column name="id" value="1002" />
+			<column name="role_id" value="1" />
+			<column name="featureright" value="ROLE_UPDATE" />
+					
+			<column name="operationat" value="2001-01-01" />
+			<column name="active" value="true" />
+		</insert>
+		<insert schemaName="public" tableName="rolefeatureright">
+			<column name="id" value="1003" />
+			<column name="role_id" value="1" />
+			<column name="featureright" value="ROLE_DELETE" />
+					
+			<column name="operationat" value="2001-01-01" />
+			<column name="active" value="true" />
+		</insert>		
+		<insert schemaName="public" tableName="rolefeatureright">
+			<column name="id" value="1004" />
+			<column name="role_id" value="1" />
+			<column name="featureright" value="ROLE_READ" />
+					
+			<column name="operationat" value="2001-01-01" />
+			<column name="active" value="true" />
+		</insert>
+		
+		<insert schemaName="public" tableName="rolefeatureright">
+			<column name="id" value="1201" />
+			<column name="role_id" value="1" />
+			<column name="featureright" value="FEATURERIGHT_CAPTURE" />
+					
+			<column name="operationat" value="2001-01-01" />
+			<column name="active" value="true" />
+		</insert>
+		
+		<!--========-->
+		<!-- User 	-->
+		<!--========-->
+		<!-- admin 	-->
+		<insert schemaName="public" tableName="users">
+			<column name="id" value="1" />
+			<column name="role_id" value="1" />
+			<column name="name" value="adminuser" />
+			<column name="password" value="***" />
+			<column name="email" value="adminuser@somewhe.re" />
+			<column name="firstname" value="admin" />
+			<column name="surname" value="user" />
+			
+			<column name="operationat" value="2001-01-01" />
+			<column name="active" value="true" />		
+		</insert>
+		
+		<!-- visitor 	-->
+		<insert schemaName="public" tableName="users">
+			<column name="id" value="2" />
+			<column name="role_id" value="2" />
+			<column name="name" value="visitor" />
+			<column name="password" value="***" />
+			<column name="email" value="visitor@somewhe.re" />
+			<column name="firstname" value="" />
+			<column name="surname" value="" />
+			
+			<column name="operationby_id" value="1" />
+			<column name="operationat" value="2012-03-04" />
+			<column name="active" value="true" />		
+		</insert>	
+		
+		<rollback>
+<!-- 			<dropTable cascadeConstraints="true" tableName="rolefeatureright"/> -->
+<!-- 			<dropTable cascadeConstraints="true" tableName="users"/> -->
+<!-- 			<dropTable cascadeConstraints="true" tableName="role"/> -->
+		</rollback>
+	</changeSet>
+</databaseChangeLog> 
